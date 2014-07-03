@@ -39,8 +39,8 @@ Notes:
 
 *   Aim to expose yourself to mild air hunger at the end of each half-breath.
 
-Breathe this way for at least 5 full breaths, preferably until your mind becomes **calm and alert**.
+Breathe this way for at least 5 full breaths, preferably until your mind becomes *calm and alert*.
 
 For the best results, follow each breath tuning session with 2 minutes of [power posing](http://youtu.be/Ks-_Mh1QhMc) to decrease cortisol and increase testosterone levels, then 3 minutes of cardio to increase [brain blood flow](http://youtu.be/IK1nMQq67VI?t=13m00s). It all takes a mere 10 minutes.
 
-Repeat every 90 minutes by timer. Even 3 full tuning breaks per day will produce noticeable results in only a week.
+Repeat every 90 minutes by timer. Even 3 full tuning breaks per day will produce noticeable results in only 1 week.
