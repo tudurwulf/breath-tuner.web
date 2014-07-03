@@ -1,0 +1,39 @@
+$body-color = hsl(0, 0%, 80%)
+$link-color = hsl(210, 80%, 50%)
+$grey-bg = hsl(210, 20%, 15%)
+
+html, body
+  margin 0
+  padding 0
+
+body
+  font 16px 'Noto Sans'
+  color $body-color
+  background black
+
+selection()
+  color hsl(0, 0%, 90%)
+  background hsl(315, 50%, 30%)
+
+::selection
+  selection()
+::-moz-selection
+  selection()
+
+nav
+  padding 2px 0
+  text-align right
+  cursor default
+
+  a
+    font-weight bold
+    text-decoration none
+    color inherit
+    margin 0 .5em
+    outline none
+
+    &:hover
+      text-decoration underline
+
+    &.current
+      color $link-color

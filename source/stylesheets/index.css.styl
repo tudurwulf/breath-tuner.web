@@ -1,0 +1,142 @@
+@require 'all.styl'
+
+$stains = false
+
+// Chart
+// -------------------------------------------------------------------------- //
+
+$barHeight = 5px
+$barWidth = 20px
+$barVSpace = 4px
+$canvasHeight = 500px // comes from HTML
+
+#breathTuner
+  margin-top 4.5em
+
+#chart
+  position relative
+  height $canvasHeight
+  overflow hidden
+
+  if $stains
+    background hsl(210, 75%, 50%)
+
+// Do not set width & heigth in CSS! They must be set only in HTML.
+#canvas
+  display block
+  position absolute
+  left 50%
+  margin-left ($barWidth / 2) + $barVSpace
+
+  if $stains
+    background hsla(0, 0%, 20%, .4)
+
+#graticule
+  width $barWidth
+  height $canvasHeight - $barHeight * 2
+  border-top $barHeight solid hsl(315, 80%, 50%)
+  border-bottom $barHeight solid hsl(315, 80%, 50%)
+  position absolute
+  top 0
+  left 50%
+  margin-left - ($barWidth / 2)
+
+#xAxis
+  width 100%
+  height 2px
+  position absolute
+  top 50%
+  margin-top - (@height / 2)
+  background $grey-bg
+
+// HUD
+// -------------------------------------------------------------------------- //
+
+// NOTES
+//
+//   .top and .bottom reffer to elements above and under the canvas. Buttons
+//   are excluded since they are inside.
+//
+//   .left and .right reffer to elements to the left and right of the
+//   graticule. Buttons are included.
+
+$HUDChartSpacing = 10px // space between outside HUD elements and #chart
+
+.HUD
+  position relative
+
+.HUD > *
+  position absolute
+  z-index 1
+
+  if $stains
+    background hsl(315, 80%, 20%)
+
+.HUD > .top
+  bottom $HUDChartSpacing
+
+.HUD > .bottom
+  top $HUDChartSpacing
+
+.HUD > .left
+  right 50%
+
+.HUD > .right
+  left 50%
+
+.HUD > .left.top,
+.HUD > .left.bottom
+  margin-right 80px
+
+.HUD > .right.top,
+.HUD > .right.bottom
+  width 3em
+
+.HUD > .counter
+  font-size 2.5em
+  text-align right
+  line-height 1
+
+#stats
+  th, td
+    text-align right
+    padding .2em .5em
+
+  th
+    font-weight bold
+
+  th:first-child
+    text-align left
+
+#buttons
+  margin-left 300px
+  user-select none
+  -moz-user-select @user-select
+  -webkit-user-select @user-select
+  -ms-user-select @user-select
+  cursor default
+
+  div
+    text-align center
+    width 7.8em
+    margin 10px 0
+    padding 5px 0
+    border 2px solid hsl(0, 0%, 10%)
+    border-radius 7px
+    -moz-border-radius @border-radius
+    -webkit-border-radius @border-radius
+    background $grey-bg
+
+    &:hover
+      border 2px solid $body-color
+
+    &:active
+      border 2px solid hsl(0, 0%, 90%)
+      color hsl(0, 0%, 90%)
+      background hsl(210, 10%, 40%)
+
+    p
+      margin 0
+
+    p:first-child
+      font-weight bold

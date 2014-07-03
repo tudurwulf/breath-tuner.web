@@ -1,0 +1,16 @@
+doctype html
+html
+  head
+    meta charset='UTF-8'
+    meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'
+    meta name='description' content='A biofeedback app which helps the user get centered through conscious breathing.'
+    meta name='keywords' content='breath,meditation,biofeedback,brain,evolution'
+    title = current_page.data.title
+    = stylesheet_link_tag 'http://fonts.googleapis.com/css?family=Noto+Sans:n,i,b'
+    - yield_content :head
+  body
+    nav
+      = tab_link_to 'breath tuner', '/index.html'
+      | ::
+      = tab_link_to 'help', '/help.html'
+    = yield
