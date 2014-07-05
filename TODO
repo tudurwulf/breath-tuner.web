@@ -1,9 +1,12 @@
-[ ]! Bars by pixel
-[ ]! Stats
+[o] Rename HTML title: BreathTuner -> Breath Tuner
+[>]! Bars by pixel
 [ ] Stop tuner when max breaths reached
 [ ] Add licence and link to source
 [ ] Move assets in HTML
 [ ] Clean config.rb
+[ ]! Stats
+[ ] Scroll canvas by drag & drop
+[ ] Mobile
 
 Legend:
   [ ] To do
