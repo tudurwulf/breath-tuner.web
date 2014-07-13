@@ -11,6 +11,7 @@ module MiddlemanExtraHelpers
   # Renders a stylesheet asset within <style> tags
   def stylesheet basename
     content_tag :style do
+      # Requires `.chomp` for proper minification
       sprockets[ "#{basename}.css" ].to_s.chomp
     end
   end
@@ -18,6 +19,7 @@ module MiddlemanExtraHelpers
   # Renders a javascript asset within <script> tags
   def javascript basename
     content_tag :script do
+      # Requires `.chomp` for proper minification
       sprockets[ "#{basename}.js" ].to_s.chomp
     end
   end
