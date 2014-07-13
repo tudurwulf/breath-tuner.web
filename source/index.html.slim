@@ -7,8 +7,6 @@ title: Breath Tuner
 - content_for :head do
   = stylesheet_link_tag 'index'
   = javascript_include_tag 'http://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js'
-  javascript:
-    window.jQuery || document.write('#{js_escape_html(javascript_include_tag 'jquery-1.11.1.min')}')
   = javascript_include_tag 'breath-tuner'
 
 #breathTuner
