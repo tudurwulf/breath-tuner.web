@@ -7,4 +7,18 @@ module MiddlemanExtraHelpers
     end
     link_to link, url, opts
   end
+
+  # Renders a stylesheet asset within <style> tags
+  def stylesheet basename
+    content_tag :style do
+      sprockets[ "#{basename}.css" ].to_s.chomp
+    end
+  end
+
+  # Renders a javascript asset within <script> tags
+  def javascript basename
+    content_tag :script do
+      sprockets[ "#{basename}.js" ].to_s.chomp
+    end
+  end
 end
