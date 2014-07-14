@@ -1,8 +1,8 @@
-[o] Rename HTML title: BreathTuner -> Breath Tuner
+[o] Change HTML title: BreathTuner -> Breath Tuner
 [o] Clean config.rb
     [o] Move helpers out of config.rb
-[>] Move assets in HTML; test if speed is improved; if not then revert
-[ ]! Bars by pixel
+[o] Move assets in HTML; test if speed is improved; if not then revert
+[>]! Bars by pixel
 [ ] Stop tuner when max breaths reached
 [ ] Add licence and link to source
 [ ]! Stats
