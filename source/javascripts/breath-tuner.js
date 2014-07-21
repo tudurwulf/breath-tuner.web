@@ -112,6 +112,7 @@ function BreathTuner() {
   $(document).keydown(function(e) {
     switch (e.which) {
       case 32: // SPACE
+      case 13: // ENTER
         switchBreath();
         return false;
       case 27: // ESC
