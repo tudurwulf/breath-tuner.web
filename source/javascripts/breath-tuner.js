@@ -24,20 +24,25 @@ function BreathTuner() {
       /** Time when current half-breath started. */
       halfBreathStartTime = null,
 
-      /** Max second that can be represented per half-breath. */
-      maxSecond = 35,
+      /** Max milliseconds that can be rendered per half-breath. */
+      maxMS = 35000,
 
-      /** Last second represented for the current half-breath. */
-      lastSecond = 0,
+      /** Time cursor: how many milliseconds of the current half-breath have
+       *  been rendered. */
+      tCursor = 0,
 
-      /** Maximum breaths supported. Used to set the width of the canvas. */
+      /** Maximum breaths that can be rendered. Also used to set the width of
+       *  the canvas. */
       maxBreaths = 100,
-
-      /** Bar width. */
-      barWidth = 20,
 
       /** Bar height. */
       barHeight = 5,
+
+      /** Min milliseconds that can be rendered. */
+      minMS = 1000 / barHeight,
+
+      /** Bar width. */
+      barWidth = barHeight * 4,
 
       /** Horizontal space between bars. */
       barHSpace = 2,
@@ -50,11 +55,17 @@ function BreathTuner() {
 
       /** Canvas height. */
       canvasHeight = xAxisHeight +
-                    (barHSpace + barHeight) * maxSecond * 2 +
+                    (barHSpace + barHeight) * (maxMS / 1000) * 2 +
                     (barHSpace + barHeight) * 2, // graticule marks
 
       /** Canvas width. */
       canvasWidth = (barWidth + barVSpace) * maxBreaths - barVSpace,
+
+      /** Coordinate of x-axis' top edge. */
+      exhalationOrigin = canvasHeight / 2 - xAxisHeight / 2,
+
+      /** Coordinate of x-axis' bottom edge. */
+      inhalationOrigin = canvasHeight / 2 + xAxisHeight / 2,
 
       /** Bar & graticule colors. */
       colors = {
@@ -144,56 +155,42 @@ function BreathTuner() {
     // Get milliseconds since current half-breath started
     var elapsed = new Date() - halfBreathStartTime;
 
-    // Convert to seconds with one decimal
-    //
-    // Example:
-    //
-    //   round(1245 / 100) / 10 => 1.2
-    //
-    elapsed = Math.round(elapsed / 100) / 10;
+    // Round to deciseconds, but stay in milli
+    elapsed = Math.round(elapsed / 100) * 100;
 
-    var currSecond = Math.floor(elapsed);
+    // Project tCursor's next position, we don't render more than the elapsed
+    // time
+    var tCursorNextPos;
 
-    if (
-      // IF current second is greater than the last one...
-      //
-      // (since lastSecond is initialised with 0, this means that for the first
-      // pass, currSecond will be 1)
-      currSecond > lastSecond
+    while ((tCursorNextPos = tCursor + minMS) <= elapsed && tCursor < maxMS) {
 
-      // AND currend second is smaller than the maximum second that can be
-      // represented, then...
-      && currSecond <= maxSecond
-    ) {
-
+      // X-position, relative to the left canvas edge
       var xPos = (barWidth + barVSpace) * breathIndex;
 
-      if (exhaling) {
-        // Draw from x-axis upwards
-        var yPos =  canvasHeight / 2 -
-                    xAxisHeight / 2 -
-                    (barHSpace + barHeight) * currSecond;
-      } else {
-        // Draw from x-axis downwards
-        var yPos =  canvasHeight / 2 +
-                    xAxisHeight / 2 +
-                    barHSpace +
-                    (barHeight + barHSpace) * (currSecond - 1);
-      }
+      // Y-position relative to an imaginary x-axis
+      var yPos =  Math.floor(tCursorNextPos / minMS) + // bar pixels
+                  Math.ceil(tCursorNextPos / 1000) * barHSpace; // space pixels
 
-      if        (currSecond <  3) {
+      // Y-position relative to the top canvas edge, but calculated in
+      // relation to the rendered x-axis (which has height)
+      if (exhaling)
+        yPos = exhalationOrigin - yPos - 1;
+      else
+        yPos = inhalationOrigin + yPos;
+
+      if        (tCursorNextPos <=  2000) {
         canvasContext.fillStyle = colors.red;
-      } else if (currSecond <  6) {
+      } else if (tCursorNextPos <=  5000) {
         canvasContext.fillStyle = colors.orange;
-      } else if (currSecond < 10) {
+      } else if (tCursorNextPos <= 10000) {
         canvasContext.fillStyle = colors.yellow;
-      } else if (currSecond < 15) {
+      } else if (tCursorNextPos <= 15000) {
         canvasContext.fillStyle = colors.green;
-      } else if (currSecond < 20) {
+      } else if (tCursorNextPos <= 20000) {
         canvasContext.fillStyle = colors.cyan;
-      } else if (currSecond < 25) {
+      } else if (tCursorNextPos <= 25000) {
         canvasContext.fillStyle = colors.blue;
-      } else if (currSecond < 30) {
+      } else if (tCursorNextPos <= 30000) {
         canvasContext.fillStyle = colors.violet;
       } else {
         canvasContext.fillStyle = colors.purple;
@@ -202,15 +199,18 @@ function BreathTuner() {
       canvasContext.fillRect( xPos,
                               yPos,
                               barWidth,
-                              barHeight);
+                              1);
 
-      lastSecond = currSecond;
+      tCursor = tCursorNextPos;
     }
 
+    // Format to deciseconds
+    elapsed = (elapsed / 1000).toFixed(1);
+
     if (exhaling)
-      exhalationTimerDisplay.html(elapsed.toFixed(1));
+      exhalationTimerDisplay.html(elapsed);
     else
-      inhalationTimerDisplay.html(elapsed.toFixed(1));
+      inhalationTimerDisplay.html(elapsed);
   }
 
   /**
@@ -221,6 +221,7 @@ function BreathTuner() {
     if (!halfBreathStartTime || new Date() - halfBreathStartTime > 2000) {
       stop();
       exhaling = !exhaling;
+      tCursor = 0;
       start();
     }
   }
@@ -233,7 +234,6 @@ function BreathTuner() {
       if (exhaling)
         breathIndex++;
       updateCanvasPosition();
-      lastSecond = 0;
       breathNoDisplay.html(breathIndex + 1);
       halfBreathStartTime = new Date();
       intervalID = setInterval(function () {
@@ -273,7 +273,6 @@ function BreathTuner() {
 
       breathIndex--;
       updateCanvasPosition();
-      lastSecond = 0;
       exhaling = false;
 
       // Reset counters
