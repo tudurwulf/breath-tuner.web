@@ -3,8 +3,8 @@
     [o] Move helpers out of config.rb
 [o] Move assets in HTML; test if speed is improved; if not then revert
 [>]! Bars by pixel
+    [o] Render remainder when switching or stopping
     [ ] setInterval vs setTimeout
-    [ ] Call drawChart() when switching and stopping
 [ ] Stop tuner when max breaths reached
 [o] Add licence and link to source
 [ ]! Stats

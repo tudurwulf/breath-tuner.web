@@ -248,6 +248,8 @@ function BreathTuner() {
   function stop() {
     if (intervalID) {
       clearInterval(intervalID);
+      // Render remainder
+      drawChart();
       halfBreathStartTime = null;
       intervalID = null;
     }
