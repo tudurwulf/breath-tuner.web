@@ -151,7 +151,7 @@ function BreathTuner() {
   /**
    * Draws the time spent breathing as bars on the canvas.
    */
-  function drawChart() {
+  function renderTime() {
     // Get milliseconds since current half-breath started
     var elapsed = new Date() - halfBreathStartTime;
 
@@ -237,7 +237,7 @@ function BreathTuner() {
       breathNoDisplay.html(breathIndex + 1);
       halfBreathStartTime = new Date();
       intervalID = setInterval(function () {
-        drawChart();
+        renderTime();
       }, 100);
     }
   }
@@ -249,7 +249,7 @@ function BreathTuner() {
     if (intervalID) {
       clearInterval(intervalID);
       // Render remainder
-      drawChart();
+      renderTime();
       halfBreathStartTime = null;
       intervalID = null;
     }
