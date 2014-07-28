@@ -12,8 +12,8 @@
 function BreathTuner() {
   var $ = window.jQuery,
 
-      /** ID used by setInterval(). */
-      intervalID = null,
+      /** ID used by setTimeout(). */
+      running = null,
 
       /** Current breath's index. */
       breathIndex = -1,
@@ -214,6 +214,14 @@ function BreathTuner() {
   }
 
   /**
+   * Runs the main loop.
+   */
+  function run() {
+    renderTime();
+    running = setTimeout(run, 100);
+  }
+
+  /**
    * Switches from exhaling to inhaling, and vice versa.
    */
   function switchBreath() {
@@ -230,15 +238,13 @@ function BreathTuner() {
    * Starts the tuner.
    */
   function start() {
-    if (!intervalID) {
+    if (!running) {
       if (exhaling)
         breathIndex++;
       updateCanvasPosition();
       breathNoDisplay.html(breathIndex + 1);
       halfBreathStartTime = new Date();
-      intervalID = setInterval(function () {
-        renderTime();
-      }, 100);
+      run();
     }
   }
 
@@ -246,12 +252,12 @@ function BreathTuner() {
    * Stops the tuner.
    */
   function stop() {
-    if (intervalID) {
-      clearInterval(intervalID);
+    if (running) {
+      clearTimeout(running);
+      running = null;
       // Render remainder
       renderTime();
       halfBreathStartTime = null;
-      intervalID = null;
     }
   }
 
@@ -288,7 +294,7 @@ function BreathTuner() {
    * Toggles the tuner.
    */
   function toggle() {
-    intervalID ? stop() : start();
+    running ? stop() : start();
   }
 }
 

@@ -2,11 +2,11 @@
 [o] Clean config.rb
     [o] Move helpers out of config.rb
 [o] Move assets in HTML; test if speed is improved; if not then revert
-[>]! Bars by pixel
-    [o] Render remainder when switching or stopping
-    [ ] setInterval vs setTimeout
-[ ] Stop tuner when max breaths reached
 [o] Add licence and link to source
+[o]! Bars by pixel
+    [o] Render remainder when switching or stopping
+    [o] setInterval vs setTimeout (winner: setTimeout)
+[>] Stop tuner when max breaths reached
 [ ]! Stats
 [ ] Icon
 [ ] Scroll canvas by drag & drop
