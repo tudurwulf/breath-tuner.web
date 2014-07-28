@@ -6,7 +6,8 @@
 [o]! Bars by pixel
     [o] Render remainder when switching or stopping
     [o] setInterval vs setTimeout (winner: setTimeout)
-[>] Stop tuner when max breaths reached
+    [o] Bug: first horizontal space inserted is 1px too much
+[o] Stop tuner when max breaths reached
 [ ]! Stats
 [ ] Icon
 [ ] Scroll canvas by drag & drop
