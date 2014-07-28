@@ -174,9 +174,9 @@ function BreathTuner() {
       // Y-position relative to the top canvas edge, but calculated in
       // relation to the rendered x-axis (which has height)
       if (exhaling)
-        yPos = exhalationOrigin - yPos - 1;
+        yPos = exhalationOrigin - yPos;
       else
-        yPos = inhalationOrigin + yPos;
+        yPos = inhalationOrigin + yPos - 1;
 
       if        (tCursorNextPos <=  2000) {
         canvasContext.fillStyle = colors.red;
