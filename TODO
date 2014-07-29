@@ -4,7 +4,7 @@
 [o] Move assets in HTML; test if speed is improved; if not then revert
 [>]! Bars by pixel
 [ ] Stop tuner when max breaths reached
-[ ] Add licence and link to source
+[o] Add licence and link to source
 [ ]! Stats
 [ ] Icon
 [ ] Scroll canvas by drag & drop

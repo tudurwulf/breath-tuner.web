@@ -1,6 +1,7 @@
 $body-color = hsl(0, 0%, 80%)
 $link-color = hsl(210, 80%, 50%)
 $grey-bg = hsl(210, 20%, 15%)
+$nav-footer-margin = .4em // top & bottom
 
 html, body
   margin 0
@@ -10,6 +11,14 @@ body
   font 16px 'Noto Sans', sans-serif
   color $body-color
   background black
+
+a
+  text-decoration none
+  color $link-color
+  outline none
+
+  &:hover
+    text-decoration underline
 
 selection()
   color hsl(0, 0%, 90%)
@@ -21,16 +30,14 @@ selection()
   selection()
 
 nav
-  padding 2px 0
+  margin $nav-footer-margin 0
   text-align right
   cursor default
 
   a
+    color $body-color
     font-weight bold
-    text-decoration none
-    color inherit
     margin 0 .5em
-    outline none
 
     &:hover
       text-decoration underline
