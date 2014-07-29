@@ -1,6 +1,6 @@
 ---
 
-title: Breath Tuner / Help
+title: BreathTuner / Help
 layout: help
 
 ---
