@@ -95,7 +95,21 @@ function BreathTuner() {
       exhalationTimerDisplay = $('#exhalationTimer'),
 
       /** Inhalation timer display. */
-      inhalationTimerDisplay = $('#inhalationTimer');
+      inhalationTimerDisplay = $('#inhalationTimer'),
+
+      /** Stats table. */
+      stats = {
+        exhalationSum:   $('#exhalationSum'),
+        exhalationAvg:   $('#exhalationAvg'),
+        exhalationRatio: $('#exhalationRatio'),
+
+        inhalationSum:   $('#inhalationSum'),
+        inhalationAvg:   $('#inhalationAvg'),
+        inhalationRatio: $('#inhalationRatio'),
+
+        breathSum: $('#breathSum'),
+        breathAvg: $('#breathAvg')
+      };
 
   canvas[0].width = canvasWidth;
   canvas[0].height = canvasHeight;
