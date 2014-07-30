@@ -271,15 +271,14 @@ function BreathTuner() {
       stop();
 
       // Delete the last exhalation
-      var xPos = (barWidth + barVSpace) * breathIndex;
-      var yPos = 0;
+      var yCursor = 0;
       var width = barWidth;
       var height = (canvasHeight - xAxisHeight) / 2;
-      canvasContext.clearRect(xPos, yPos, width, height);
+      canvasContext.clearRect(xCursor, yCursor, width, height);
 
       // Delete the last inhalation
-      yPos = (canvasHeight + xAxisHeight) / 2;
-      canvasContext.clearRect(xPos, yPos, width, height);
+      yCursor = (canvasHeight + xAxisHeight) / 2;
+      canvasContext.clearRect(xCursor, yCursor, width, height);
 
       breathIndex--;
       updateCanvasPosition();
