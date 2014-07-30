@@ -169,15 +169,15 @@ function BreathTuner() {
     while ((tCursorNextPos = tCursor + minMS) <= elapsed && tCursor < maxMS) {
 
       // Y-position relative to an imaginary x-axis
-      var yPos =  tCursorNextPos / minMS + // bar pixels
+      var yCursor =  tCursorNextPos / minMS + // bar pixels
                   Math.ceil(tCursorNextPos / 1000) * barHSpace; // space pixels
 
       // Y-position relative to the top canvas edge, but calculated in
       // relation to the rendered x-axis (which has height)
       if (exhaling)
-        yPos = exhalationOrigin - yPos;
+        yCursor = exhalationOrigin - yCursor;
       else
-        yPos = inhalationOrigin + yPos - 1;
+        yCursor = inhalationOrigin + yCursor - 1;
 
       if        (tCursorNextPos <=  2000) {
         canvasContext.fillStyle = colors.red;
@@ -198,7 +198,7 @@ function BreathTuner() {
       }
 
       canvasContext.fillRect( xCursor,
-                              yPos,
+                              yCursor,
                               barWidth,
                               1);
 
