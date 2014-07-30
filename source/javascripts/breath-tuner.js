@@ -205,13 +205,12 @@ function BreathTuner() {
       tCursor = tCursorNext;
     }
 
-    // Format to deciseconds
-    elapsed = (elapsed / 1000).toFixed(1);
-
     if (exhaling)
-      exhalationTimerDisplay.html(elapsed);
+      exhalationTimerDisplay.html((elapsed / 1000).toFixed(1));
     else
-      inhalationTimerDisplay.html(elapsed);
+      inhalationTimerDisplay.html((elapsed / 1000).toFixed(1));
+
+    return elapsed;
   }
 
   /**
