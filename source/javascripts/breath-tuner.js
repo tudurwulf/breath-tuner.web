@@ -82,6 +82,9 @@ function BreathTuner() {
         purple: 'hsl(315, 80%, 50%)'
       },
 
+      /** Breath times used to calculate statistics. */
+      times = [],
+
       /** Canvas object. */
       canvas = $('#canvas'),
 
@@ -309,6 +312,48 @@ function BreathTuner() {
    */
   function toggle() {
     running ? stop() : start();
+  }
+
+  /**
+   * Updates the stats table.
+   */
+  function updateStats() {
+    function formatSeconds(i) {
+      return (i / 1000).toFixed(1);
+    }
+
+    function formatMinutes(i) {
+      var m = Math.floor(i / 60000);
+      var s = i % 60000 / 1000;
+      return m + ':' + ('0' + s.toFixed(1)).slice(-4);
+    }
+
+    function formatRatio(i) {
+      return i.toFixed(1) + '%'
+    }
+
+    var exhalationSum = 0,
+        inhalationSum = 0,
+        breathSum = 0,
+        timesLen = times.length;
+
+    for (var i = 0; i < timesLen; i++) {
+      exhalationSum += times[i][0];
+      inhalationSum += times[i][1];
+    }
+
+    breathSum = exhalationSum + inhalationSum;
+
+    stats.exhalationSum.html(formatMinutes(exhalationSum));
+    stats.exhalationAvg.html(formatSeconds(exhalationSum/timesLen));
+    stats.exhalationRatio.html(formatRatio(100*exhalationSum/breathSum));
+
+    stats.inhalationSum.html(formatMinutes(inhalationSum));
+    stats.inhalationAvg.html(formatSeconds(inhalationSum/timesLen));
+    stats.inhalationRatio.html(formatRatio(100*inhalationSum/breathSum));
+
+    stats.breathSum.html(formatMinutes(breathSum));
+    stats.breathAvg.html(formatSeconds(breathSum/timesLen));
   }
 }
 
