@@ -162,15 +162,15 @@ function BreathTuner() {
     // Round to deciseconds, but stay in milli
     elapsed = Math.round(elapsed / 100) * 100;
 
-    // Project tCursor's next position, we don't render more than the elapsed
+    // Project tCursor's next position, so we don't render more than the elapsed
     // time
-    var tCursorNextPos;
+    var tCursorNext;
 
-    while ((tCursorNextPos = tCursor + minMS) <= elapsed && tCursor < maxMS) {
+    while ((tCursorNext = tCursor + minMS) <= elapsed && tCursor < maxMS) {
 
       // Y-position relative to an imaginary x-axis
-      var yCursor = tCursorNextPos / minMS + // bar pixels
-                    Math.ceil(tCursorNextPos / 1000) * barHSpace; // space pixels
+      var yCursor = tCursorNext / minMS + // bar pixels
+                    Math.ceil(tCursorNext / 1000) * barHSpace; // space pixels
 
       // Y-position relative to the top canvas edge, but calculated in
       // relation to the rendered x-axis (which has height)
@@ -179,19 +179,19 @@ function BreathTuner() {
       else
         yCursor = inhalationOrigin + yCursor - 1;
 
-      if        (tCursorNextPos <=  2000) {
+      if        (tCursorNext <=  2000) {
         canvasContext.fillStyle = colors.red;
-      } else if (tCursorNextPos <=  5000) {
+      } else if (tCursorNext <=  5000) {
         canvasContext.fillStyle = colors.orange;
-      } else if (tCursorNextPos <= 10000) {
+      } else if (tCursorNext <= 10000) {
         canvasContext.fillStyle = colors.yellow;
-      } else if (tCursorNextPos <= 15000) {
+      } else if (tCursorNext <= 15000) {
         canvasContext.fillStyle = colors.green;
-      } else if (tCursorNextPos <= 20000) {
+      } else if (tCursorNext <= 20000) {
         canvasContext.fillStyle = colors.cyan;
-      } else if (tCursorNextPos <= 25000) {
+      } else if (tCursorNext <= 25000) {
         canvasContext.fillStyle = colors.blue;
-      } else if (tCursorNextPos <= 30000) {
+      } else if (tCursorNext <= 30000) {
         canvasContext.fillStyle = colors.violet;
       } else {
         canvasContext.fillStyle = colors.purple;
@@ -202,7 +202,7 @@ function BreathTuner() {
                               barWidth,
                               1);
 
-      tCursor = tCursorNextPos;
+      tCursor = tCursorNext;
     }
 
     // Format to deciseconds
