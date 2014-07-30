@@ -168,7 +168,7 @@ function BreathTuner() {
       var xPos = (barWidth + barVSpace) * breathIndex;
 
       // Y-position relative to an imaginary x-axis
-      var yPos =  Math.floor(tCursorNextPos / minMS) + // bar pixels
+      var yPos =  tCursorNextPos / minMS + // bar pixels
                   Math.ceil(tCursorNextPos / 1000) * barHSpace; // space pixels
 
       // Y-position relative to the top canvas edge, but calculated in
