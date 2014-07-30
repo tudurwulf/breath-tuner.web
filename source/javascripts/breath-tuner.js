@@ -218,7 +218,7 @@ function BreathTuner() {
    */
   function switchBreath() {
     // Protect the user from double key press
-    if (!halfBreathStartTime || new Date() - halfBreathStartTime > 1000) {
+    if (!halfBreathStartTime || new Date() - halfBreathStartTime > 2000) {
       stop();
       exhaling = !exhaling;
       start();
