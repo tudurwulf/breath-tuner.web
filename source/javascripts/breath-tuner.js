@@ -67,6 +67,9 @@ function BreathTuner() {
       /** Coordinate of x-axis' bottom edge. */
       inhalationOrigin = canvasHeight / 2 + xAxisHeight / 2,
 
+      /** X-position of the current breath relative to the left canvas edge. */
+      xCursor = 0,
+
       /** Bar & graticule colors. */
       colors = {
         red:    'hsl(  0, 80%, 50%)',
@@ -139,6 +142,13 @@ function BreathTuner() {
    * ------------------------------------------------------------------------ */
 
   /**
+   * Updates xCursor. Should be executed each time the graph moves horizontally.
+   */
+  function updateXCursor() {
+    xCursor = (barWidth + barVSpace) * breathIndex;
+  }
+
+  /**
    * Updates the canvas' horizontal position so the current breath is aligned
    * with the graticule.
    */
@@ -163,9 +173,6 @@ function BreathTuner() {
     var tCursorNextPos;
 
     while ((tCursorNextPos = tCursor + minMS) <= elapsed && tCursor < maxMS) {
-
-      // X-position, relative to the left canvas edge
-      var xPos = (barWidth + barVSpace) * breathIndex;
 
       // Y-position relative to an imaginary x-axis
       var yPos =  tCursorNextPos / minMS + // bar pixels
@@ -196,7 +203,7 @@ function BreathTuner() {
         canvasContext.fillStyle = colors.purple;
       }
 
-      canvasContext.fillRect( xPos,
+      canvasContext.fillRect( xCursor,
                               yPos,
                               barWidth,
                               1);
@@ -239,8 +246,10 @@ function BreathTuner() {
    */
   function start() {
     if (!running) {
-      if (exhaling)
+      if (exhaling) {
         breathIndex++;
+        updateXCursor();
+      }
       updateCanvasPosition();
       breathNoDisplay.html(breathIndex + 1);
       halfBreathStartTime = new Date();
@@ -280,6 +289,7 @@ function BreathTuner() {
       canvasContext.clearRect(xPos, yPos, width, height);
 
       breathIndex--;
+      updateXCursor();
       updateCanvasPosition();
       exhaling = false;
 
