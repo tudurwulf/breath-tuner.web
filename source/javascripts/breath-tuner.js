@@ -12,8 +12,8 @@
 function BreathTuner() {
   var $ = window.jQuery,
 
-      /** ID used by setInterval(). */
-      intervalID = null,
+      /** ID used by setTimeout(). */
+      running = null,
 
       /** Current breath's index. */
       breathIndex = -1,
@@ -24,20 +24,25 @@ function BreathTuner() {
       /** Time when current half-breath started. */
       halfBreathStartTime = null,
 
-      /** Max second that can be represented per half-breath. */
-      maxSecond = 35,
+      /** Max milliseconds that can be rendered per half-breath. */
+      maxMS = 35000,
 
-      /** Last second represented for the current half-breath. */
-      lastSecond = 0,
+      /** Time cursor: how many milliseconds of the current half-breath have
+       *  been rendered. */
+      tCursor = 0,
 
-      /** Maximum breaths supported. Used to set the width of the canvas. */
+      /** Maximum breaths that can be rendered. Also used to set the width of
+       *  the canvas. */
       maxBreaths = 100,
-
-      /** Bar width. */
-      barWidth = 20,
 
       /** Bar height. */
       barHeight = 5,
+
+      /** Min milliseconds that can be rendered. */
+      minMS = 1000 / barHeight,
+
+      /** Bar width. */
+      barWidth = barHeight * 4,
 
       /** Horizontal space between bars. */
       barHSpace = 2,
@@ -50,11 +55,20 @@ function BreathTuner() {
 
       /** Canvas height. */
       canvasHeight = xAxisHeight +
-                    (barHSpace + barHeight) * maxSecond * 2 +
+                    (barHSpace + barHeight) * (maxMS / 1000) * 2 +
                     (barHSpace + barHeight) * 2, // graticule marks
 
       /** Canvas width. */
       canvasWidth = (barWidth + barVSpace) * maxBreaths - barVSpace,
+
+      /** Coordinate of x-axis' top edge. */
+      exhalationOrigin = canvasHeight / 2 - xAxisHeight / 2,
+
+      /** Coordinate of x-axis' bottom edge. */
+      inhalationOrigin = canvasHeight / 2 + xAxisHeight / 2,
+
+      /** X-position of the current breath relative to the left canvas edge. */
+      xCursor = 0,
 
       /** Bar & graticule colors. */
       colors = {
@@ -129,9 +143,10 @@ function BreathTuner() {
 
   /**
    * Updates the canvas' horizontal position so the current breath is aligned
-   * with the graticule.
+   * with the graticule. Also updates xCursor.
    */
   function updateCanvasPosition() {
+    xCursor = (barWidth + barVSpace) * breathIndex;
     canvas.css('margin-left', barWidth / 2 + barVSpace -
                               (barWidth + barVSpace) * (breathIndex + 1) +
                               'px');
@@ -140,77 +155,71 @@ function BreathTuner() {
   /**
    * Draws the time spent breathing as bars on the canvas.
    */
-  function drawChart() {
+  function renderTime() {
     // Get milliseconds since current half-breath started
     var elapsed = new Date() - halfBreathStartTime;
 
-    // Convert to seconds with one decimal
-    //
-    // Example:
-    //
-    //   round(1245 / 100) / 10 => 1.2
-    //
-    elapsed = Math.round(elapsed / 100) / 10;
+    // Round to deciseconds, but stay in milli
+    elapsed = Math.round(elapsed / 100) * 100;
 
-    var currSecond = Math.floor(elapsed);
+    // Project tCursor's next position, so we don't render more than the elapsed
+    // time
+    var tCursorNext;
 
-    if (
-      // IF current second is greater than the last one...
-      //
-      // (since lastSecond is initialised with 0, this means that for the first
-      // pass, currSecond will be 1)
-      currSecond > lastSecond
+    while ((tCursorNext = tCursor + minMS) <= elapsed && tCursor < maxMS) {
 
-      // AND currend second is smaller than the maximum second that can be
-      // represented, then...
-      && currSecond <= maxSecond
-    ) {
+      // Y-position relative to an imaginary x-axis
+      var yCursor = tCursorNext / minMS + // bar pixels
+                    Math.ceil(tCursorNext / 1000) * barHSpace; // space pixels
 
-      var xPos = (barWidth + barVSpace) * breathIndex;
+      // Y-position relative to the top canvas edge, but calculated in
+      // relation to the rendered x-axis (which has height)
+      if (exhaling)
+        yCursor = exhalationOrigin - yCursor;
+      else
+        yCursor = inhalationOrigin + yCursor - 1;
 
-      if (exhaling) {
-        // Draw from x-axis upwards
-        var yPos =  canvasHeight / 2 -
-                    xAxisHeight / 2 -
-                    (barHSpace + barHeight) * currSecond;
-      } else {
-        // Draw from x-axis downwards
-        var yPos =  canvasHeight / 2 +
-                    xAxisHeight / 2 +
-                    barHSpace +
-                    (barHeight + barHSpace) * (currSecond - 1);
-      }
-
-      if        (currSecond <  3) {
+      if        (tCursorNext <=  2000) {
         canvasContext.fillStyle = colors.red;
-      } else if (currSecond <  6) {
+      } else if (tCursorNext <=  5000) {
         canvasContext.fillStyle = colors.orange;
-      } else if (currSecond < 10) {
+      } else if (tCursorNext <= 10000) {
         canvasContext.fillStyle = colors.yellow;
-      } else if (currSecond < 15) {
+      } else if (tCursorNext <= 15000) {
         canvasContext.fillStyle = colors.green;
-      } else if (currSecond < 20) {
+      } else if (tCursorNext <= 20000) {
         canvasContext.fillStyle = colors.cyan;
-      } else if (currSecond < 25) {
+      } else if (tCursorNext <= 25000) {
         canvasContext.fillStyle = colors.blue;
-      } else if (currSecond < 30) {
+      } else if (tCursorNext <= 30000) {
         canvasContext.fillStyle = colors.violet;
       } else {
         canvasContext.fillStyle = colors.purple;
       }
 
-      canvasContext.fillRect( xPos,
-                              yPos,
+      canvasContext.fillRect( xCursor,
+                              yCursor,
                               barWidth,
-                              barHeight);
+                              1);
 
-      lastSecond = currSecond;
+      tCursor = tCursorNext;
     }
 
+    // Format to deciseconds
+    elapsed = (elapsed / 1000).toFixed(1);
+
     if (exhaling)
-      exhalationTimerDisplay.html(elapsed.toFixed(1));
+      exhalationTimerDisplay.html(elapsed);
     else
-      inhalationTimerDisplay.html(elapsed.toFixed(1));
+      inhalationTimerDisplay.html(elapsed);
+  }
+
+  /**
+   * Runs the main loop.
+   */
+  function run() {
+    renderTime();
+    running = setTimeout(run, 100);
   }
 
   /**
@@ -221,6 +230,7 @@ function BreathTuner() {
     if (!halfBreathStartTime || new Date() - halfBreathStartTime > 2000) {
       stop();
       exhaling = !exhaling;
+      tCursor = 0;
       start();
     }
   }
@@ -229,16 +239,14 @@ function BreathTuner() {
    * Starts the tuner.
    */
   function start() {
-    if (!intervalID) {
-      if (exhaling)
+    if (!running) {
+      if (exhaling) {
         breathIndex++;
-      updateCanvasPosition();
-      lastSecond = 0;
+        updateCanvasPosition();
+      }
       breathNoDisplay.html(breathIndex + 1);
       halfBreathStartTime = new Date();
-      intervalID = setInterval(function () {
-        drawChart();
-      }, 100);
+      run();
     }
   }
 
@@ -246,10 +254,12 @@ function BreathTuner() {
    * Stops the tuner.
    */
   function stop() {
-    if (intervalID) {
-      clearInterval(intervalID);
+    if (running) {
+      clearTimeout(running);
+      running = null;
+      // Render remainder
+      renderTime();
       halfBreathStartTime = null;
-      intervalID = null;
     }
   }
 
@@ -261,19 +271,17 @@ function BreathTuner() {
       stop();
 
       // Delete the last exhalation
-      var xPos = (barWidth + barVSpace) * breathIndex;
-      var yPos = 0;
+      var yCursor = 0;
       var width = barWidth;
       var height = (canvasHeight - xAxisHeight) / 2;
-      canvasContext.clearRect(xPos, yPos, width, height);
+      canvasContext.clearRect(xCursor, yCursor, width, height);
 
       // Delete the last inhalation
-      yPos = (canvasHeight + xAxisHeight) / 2;
-      canvasContext.clearRect(xPos, yPos, width, height);
+      yCursor = (canvasHeight + xAxisHeight) / 2;
+      canvasContext.clearRect(xCursor, yCursor, width, height);
 
       breathIndex--;
       updateCanvasPosition();
-      lastSecond = 0;
       exhaling = false;
 
       // Reset counters
@@ -287,7 +295,7 @@ function BreathTuner() {
    * Toggles the tuner.
    */
   function toggle() {
-    intervalID ? stop() : start();
+    running ? stop() : start();
   }
 }
 
