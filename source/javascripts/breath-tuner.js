@@ -142,17 +142,11 @@ function BreathTuner() {
    * ------------------------------------------------------------------------ */
 
   /**
-   * Updates xCursor. Should be executed each time the graph moves horizontally.
-   */
-  function updateXCursor() {
-    xCursor = (barWidth + barVSpace) * breathIndex;
-  }
-
-  /**
    * Updates the canvas' horizontal position so the current breath is aligned
-   * with the graticule.
+   * with the graticule. Also updates xCursor.
    */
   function updateCanvasPosition() {
+    xCursor = (barWidth + barVSpace) * breathIndex;
     canvas.css('margin-left', barWidth / 2 + barVSpace -
                               (barWidth + barVSpace) * (breathIndex + 1) +
                               'px');
@@ -248,7 +242,6 @@ function BreathTuner() {
     if (!running) {
       if (exhaling) {
         breathIndex++;
-        updateXCursor();
         updateCanvasPosition();
       }
       breathNoDisplay.html(breathIndex + 1);
@@ -289,7 +282,6 @@ function BreathTuner() {
       canvasContext.clearRect(xPos, yPos, width, height);
 
       breathIndex--;
-      updateXCursor();
       updateCanvasPosition();
       exhaling = false;
 
