@@ -272,9 +272,19 @@ function BreathTuner() {
   function stop() {
     if (running) {
       clearTimeout(running);
+
       running = null;
+
       // Render remainder
-      renderTime();
+      var halfBreathTime = renderTime();
+
+      if (exhaling) {
+        times[breathIndex] = [halfBreathTime, null];
+      } else {
+        times[breathIndex][1] = halfBreathTime;
+        updateStats();
+      }
+
       halfBreathStartTime = null;
     }
   }
