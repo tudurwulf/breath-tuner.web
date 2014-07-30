@@ -169,8 +169,8 @@ function BreathTuner() {
     while ((tCursorNextPos = tCursor + minMS) <= elapsed && tCursor < maxMS) {
 
       // Y-position relative to an imaginary x-axis
-      var yCursor =  tCursorNextPos / minMS + // bar pixels
-                  Math.ceil(tCursorNextPos / 1000) * barHSpace; // space pixels
+      var yCursor = tCursorNextPos / minMS + // bar pixels
+                    Math.ceil(tCursorNextPos / 1000) * barHSpace; // space pixels
 
       // Y-position relative to the top canvas edge, but calculated in
       // relation to the rendered x-axis (which has height)
