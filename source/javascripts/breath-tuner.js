@@ -323,6 +323,8 @@ function BreathTuner() {
       yCursor = (canvasHeight + xAxisHeight) / 2;
       canvasContext.clearRect(xCursor, yCursor, width, height);
 
+      stats.pop();
+
       breathIndex--;
       updateCanvasPosition();
       exhaling = false;
