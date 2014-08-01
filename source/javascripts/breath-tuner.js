@@ -21,8 +21,11 @@ function BreathTuner() {
       /** Currently exhaling? */
       exhaling = false,
 
-      /** Timestamp when current half-breath started. */
+      /** Timestamp when the current half-breath started. */
       halfBreathStart = null,
+
+      /** Elapsed milliseconds since the current half-breath started. */
+      halfBreathSplit = 0,
 
       /** Max milliseconds that can be rendered per half-breath. */
       maxMS = 35000,
@@ -174,7 +177,7 @@ function BreathTuner() {
    */
   function renderTime() {
     // Get milliseconds since current half-breath started
-    var halfBreathSplit = new Date() - halfBreathStart;
+    halfBreathSplit = new Date() - halfBreathStart;
 
     // Round to deciseconds, but stay in milli
     halfBreathSplit = Math.round(halfBreathSplit / 100) * 100;
@@ -226,8 +229,6 @@ function BreathTuner() {
       exhalationTimerDisplay.html((halfBreathSplit / 1000).toFixed(1));
     else
       inhalationTimerDisplay.html((halfBreathSplit / 1000).toFixed(1));
-
-    return halfBreathSplit;
   }
 
   /**
@@ -276,12 +277,12 @@ function BreathTuner() {
       running = null;
 
       // Render remainder
-      var halfBreathTime = renderTime();
+      renderTime();
 
       if (exhaling) {
-        times[breathIndex] = [halfBreathTime, null];
+        times[breathIndex] = [halfBreathSplit, null];
       } else {
-        times[breathIndex][1] = halfBreathTime;
+        times[breathIndex][1] = halfBreathSplit;
         updateStats();
       }
 
