@@ -200,17 +200,6 @@ function BreathTuner() {
    * ------------------------------------------------------------------------ */
 
   /**
-   * Updates the canvas' horizontal position so the current breath is aligned
-   * with the graticule. Also updates xCursor.
-   */
-  function updateCanvasPosition() {
-    xCursor = (barWidth + barVSpace) * breathIndex;
-    canvas.css('margin-left', barWidth / 2 + barVSpace -
-                              (barWidth + barVSpace) * (breathIndex + 1) +
-                              'px');
-  }
-
-  /**
    * Draws the time spent breathing as bars on the canvas.
    */
   function renderTime() {
@@ -405,6 +394,17 @@ function BreathTuner() {
       stats[breathIndex].inhRatio = 100 * stats[breathIndex].inhSum /
                                     stats[breathIndex].breathSum;
     }
+  }
+
+  /**
+   * Updates the canvas' horizontal position so the current breath is aligned
+   * with the graticule. Also updates xCursor.
+   */
+  function updateCanvasPosition() {
+    xCursor = (barWidth + barVSpace) * breathIndex;
+    canvas.css('margin-left', barWidth / 2 + barVSpace -
+                              (barWidth + barVSpace) * (breathIndex + 1) +
+                              'px');
   }
 
   /**
