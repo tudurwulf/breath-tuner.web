@@ -174,16 +174,16 @@ function BreathTuner() {
    */
   function renderTime() {
     // Get milliseconds since current half-breath started
-    var elapsed = new Date() - halfBreathStart;
+    var halfBreathSplit = new Date() - halfBreathStart;
 
     // Round to deciseconds, but stay in milli
-    elapsed = Math.round(elapsed / 100) * 100;
+    halfBreathSplit = Math.round(halfBreathSplit / 100) * 100;
 
     // Project tCursor's next position, so we don't render more than the elapsed
     // time
     var tCursorNext;
 
-    while ((tCursorNext = tCursor + minMS) <= elapsed && tCursor < maxMS) {
+    while ((tCursorNext = tCursor + minMS) <= halfBreathSplit && tCursor < maxMS) {
 
       // Y-position relative to an imaginary x-axis
       var yCursor = tCursorNext / minMS + // bar pixels
@@ -223,11 +223,11 @@ function BreathTuner() {
     }
 
     if (exhaling)
-      exhalationTimerDisplay.html((elapsed / 1000).toFixed(1));
+      exhalationTimerDisplay.html((halfBreathSplit / 1000).toFixed(1));
     else
-      inhalationTimerDisplay.html((elapsed / 1000).toFixed(1));
+      inhalationTimerDisplay.html((halfBreathSplit / 1000).toFixed(1));
 
-    return elapsed;
+    return halfBreathSplit;
   }
 
   /**
