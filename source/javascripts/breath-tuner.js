@@ -85,8 +85,29 @@ function BreathTuner() {
         purple: 'hsl(315, 80%, 50%)'
       },
 
-      /** Breath times used to calculate statistics. */
-      times = [],
+      /**
+       * Statistics table:
+       *
+       * stats = [
+       *   {
+       *     exhalationTime,
+       *     exhalationTimeSum,
+       *     exhalationTimeAvg,
+       *     exhalationTimeRatio,
+       *
+       *     inhalationTime,
+       *     inhalationTimeSum,
+       *     inhalationTimeAvg,
+       *     inhalationTimeRatio,
+       *
+       *     breathTime,
+       *     breathTimeSum,
+       *     breathTimeAvg
+       *   },
+       *   ...
+       * ]
+       */
+      stats = [],
 
       /** Canvas object. */
       canvas = $('#canvas'),
@@ -273,18 +294,13 @@ function BreathTuner() {
   function stop() {
     if (running) {
       clearTimeout(running);
-
       running = null;
 
       // Render remainder
       renderTime();
 
-      if (exhaling) {
-        times[breathIndex] = [halfBreathSplit, null];
-      } else {
-        times[breathIndex][1] = halfBreathSplit;
-        updateStats();
-      }
+      pushStats();
+      if (!exhaling) updateStats();
 
       halfBreathStart = null;
     }
@@ -319,6 +335,60 @@ function BreathTuner() {
   }
 
   /**
+   * Calculate and store statistics.
+   */
+  function pushStats() {
+    if (exhaling) {
+      // Init a stats row
+      stats[breathIndex] = {};
+
+      stats[breathIndex].exhalationTime = halfBreathSplit;
+
+      if (breathIndex > 0) {
+        stats[breathIndex].exhalationSum =  stats[breathIndex - 1].exhalationSum +
+                                            stats[breathIndex].exhalationTime;
+      } else {
+        stats[breathIndex].exhalationSum = stats[breathIndex].exhalationTime;
+      }
+
+      stats[breathIndex].exhalationAvg =  stats[breathIndex].exhalationSum /
+                                          (breathIndex + 1);
+
+    // IF inhaling
+    } else {
+      stats[breathIndex].inhalationTime = halfBreathSplit;
+
+      stats[breathIndex].breathTime = stats[breathIndex].exhalationTime +
+                                      stats[breathIndex].inhalationTime;
+
+      if (breathIndex > 0) {
+        stats[breathIndex].inhalationSum =  stats[breathIndex - 1].inhalationSum +
+                                            stats[breathIndex].inhalationTime;
+
+        stats[breathIndex].breathSum =  stats[breathIndex - 1].breathSum +
+                                        stats[breathIndex].breathTime;
+
+      } else {
+        stats[breathIndex].inhalationSum = stats[breathIndex].inhalationTime;
+
+        stats[breathIndex].breathSum = stats[breathIndex].breathTime;
+      }
+
+      stats[breathIndex].inhalationAvg =  stats[breathIndex].inhalationSum /
+                                          (breathIndex + 1);
+
+      stats[breathIndex].breathAvg =  stats[breathIndex].breathSum /
+                                      (breathIndex + 1);
+
+      stats[breathIndex].exhalationRatio =  100 * stats[breathIndex].exhalationSum /
+                                            stats[breathIndex].breathSum;
+
+      stats[breathIndex].inhalationRatio =  100 * stats[breathIndex].inhalationSum /
+                                            stats[breathIndex].breathSum;
+    }
+  }
+
+  /**
    * Updates the stats table.
    */
   function updateStats() {
@@ -336,28 +406,16 @@ function BreathTuner() {
       return i.toFixed(1) + '%';
     }
 
-    var exhalationSum = 0,
-        inhalationSum = 0,
-        breathSum = 0,
-        timesLen = times.length;
+    statsDisplay.exhalationSum.html(formatMinutes(stats[breathIndex].exhalationSum));
+    statsDisplay.exhalationAvg.html(formatSeconds(stats[breathIndex].exhalationAvg));
+    statsDisplay.exhalationRatio.html(formatRatio(stats[breathIndex].exhalationRatio));
 
-    for (var i = 0; i < timesLen; i++) {
-      exhalationSum += times[i][0];
-      inhalationSum += times[i][1];
-    }
+    statsDisplay.inhalationSum.html(formatMinutes(stats[breathIndex].inhalationSum));
+    statsDisplay.inhalationAvg.html(formatSeconds(stats[breathIndex].inhalationAvg));
+    statsDisplay.inhalationRatio.html(formatRatio(stats[breathIndex].inhalationRatio));
 
-    breathSum = exhalationSum + inhalationSum;
-
-    statsDisplay.exhalationSum.html(formatMinutes(exhalationSum));
-    statsDisplay.exhalationAvg.html(formatSeconds(exhalationSum/timesLen));
-    statsDisplay.exhalationRatio.html(formatRatio(100*exhalationSum/breathSum));
-
-    statsDisplay.inhalationSum.html(formatMinutes(inhalationSum));
-    statsDisplay.inhalationAvg.html(formatSeconds(inhalationSum/timesLen));
-    statsDisplay.inhalationRatio.html(formatRatio(100*inhalationSum/breathSum));
-
-    statsDisplay.breathSum.html(formatMinutes(breathSum));
-    statsDisplay.breathAvg.html(formatSeconds(breathSum/timesLen));
+    statsDisplay.breathSum.html(formatMinutes(stats[breathIndex].breathSum));
+    statsDisplay.breathAvg.html(formatSeconds(stats[breathIndex].breathAvg));
   }
 }
 
