@@ -23,6 +23,4 @@ configure :development do
 end
 
 configure :build do
-  # Append an HTTP prefix in case of deploying to a nested directory
-  # set :http_prefix, '/apps/breath-tuner/'
 end
