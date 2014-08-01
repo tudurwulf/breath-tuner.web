@@ -101,7 +101,7 @@ function BreathTuner() {
       inhalationTimerDisplay = $('#inhalationTimer'),
 
       /** Stats table. */
-      stats = {
+      statsDisplay = {
         exhalationSum:   $('#exhalationSum'),
         exhalationAvg:   $('#exhalationAvg'),
         exhalationRatio: $('#exhalationRatio'),
@@ -347,16 +347,16 @@ function BreathTuner() {
 
     breathSum = exhalationSum + inhalationSum;
 
-    stats.exhalationSum.html(formatMinutes(exhalationSum));
-    stats.exhalationAvg.html(formatSeconds(exhalationSum/timesLen));
-    stats.exhalationRatio.html(formatRatio(100*exhalationSum/breathSum));
+    statsDisplay.exhalationSum.html(formatMinutes(exhalationSum));
+    statsDisplay.exhalationAvg.html(formatSeconds(exhalationSum/timesLen));
+    statsDisplay.exhalationRatio.html(formatRatio(100*exhalationSum/breathSum));
 
-    stats.inhalationSum.html(formatMinutes(inhalationSum));
-    stats.inhalationAvg.html(formatSeconds(inhalationSum/timesLen));
-    stats.inhalationRatio.html(formatRatio(100*inhalationSum/breathSum));
+    statsDisplay.inhalationSum.html(formatMinutes(inhalationSum));
+    statsDisplay.inhalationAvg.html(formatSeconds(inhalationSum/timesLen));
+    statsDisplay.inhalationRatio.html(formatRatio(100*inhalationSum/breathSum));
 
-    stats.breathSum.html(formatMinutes(breathSum));
-    stats.breathAvg.html(formatSeconds(breathSum/timesLen));
+    statsDisplay.breathSum.html(formatMinutes(breathSum));
+    statsDisplay.breathAvg.html(formatSeconds(breathSum/timesLen));
   }
 }
 
