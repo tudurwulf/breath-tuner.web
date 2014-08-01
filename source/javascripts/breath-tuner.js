@@ -140,17 +140,17 @@ function BreathTuner() {
 
   // Default stats
   stats[-1] = {
-    exhTime: 0,
+    exhLen: 0,
     exhSum: 0,
     exhAvg: 0,
     exhRatio: 0,
 
-    inhTime: 0,
+    inhLen: 0,
     inhSum: 0,
     inhAvg: 0,
     inhRatio: 0,
 
-    breathTime: 0,
+    breathLen: 0,
     breathSum: 0,
     breathAvg: 0
   };
@@ -361,13 +361,13 @@ function BreathTuner() {
       // Init a stats row
       stats[breathIndex] = {};
 
-      stats[breathIndex].exhTime = halfBreathSplit;
+      stats[breathIndex].exhLen = halfBreathSplit;
 
       if (breathIndex > 0) {
         stats[breathIndex].exhSum = stats[breathIndex - 1].exhSum +
-                                    stats[breathIndex].exhTime;
+                                    stats[breathIndex].exhLen;
       } else {
-        stats[breathIndex].exhSum = stats[breathIndex].exhTime;
+        stats[breathIndex].exhSum = stats[breathIndex].exhLen;
       }
 
       stats[breathIndex].exhAvg = stats[breathIndex].exhSum /
@@ -375,22 +375,22 @@ function BreathTuner() {
 
     // IF inhaling
     } else {
-      stats[breathIndex].inhTime = halfBreathSplit;
+      stats[breathIndex].inhLen = halfBreathSplit;
 
-      stats[breathIndex].breathTime = stats[breathIndex].exhTime +
-                                      stats[breathIndex].inhTime;
+      stats[breathIndex].breathLen =  stats[breathIndex].exhLen +
+                                      stats[breathIndex].inhLen;
 
       if (breathIndex > 0) {
         stats[breathIndex].inhSum = stats[breathIndex - 1].inhSum +
-                                    stats[breathIndex].inhTime;
+                                    stats[breathIndex].inhLen;
 
         stats[breathIndex].breathSum =  stats[breathIndex - 1].breathSum +
-                                        stats[breathIndex].breathTime;
+                                        stats[breathIndex].breathLen;
 
       } else {
-        stats[breathIndex].inhSum = stats[breathIndex].inhTime;
+        stats[breathIndex].inhSum = stats[breathIndex].inhLen;
 
-        stats[breathIndex].breathSum = stats[breathIndex].breathTime;
+        stats[breathIndex].breathSum = stats[breathIndex].breathLen;
       }
 
       stats[breathIndex].inhAvg = stats[breathIndex].inhSum /
@@ -419,7 +419,7 @@ function BreathTuner() {
    */
   function updateExhTimerDisplay(time) {
     if (time == undefined)
-      time = stats[breathIndex].exhTime;
+      time = stats[breathIndex].exhLen;
     exhTimerDisplay.html((time / 1000).toFixed(1));
   }
 
@@ -428,7 +428,7 @@ function BreathTuner() {
    */
   function updateInhTimerDisplay(time) {
     if (time == undefined)
-      time = stats[breathIndex].inhTime;
+      time = stats[breathIndex].inhLen;
     inhTimerDisplay.html((time / 1000).toFixed(1));
   }
 
