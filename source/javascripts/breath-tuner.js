@@ -318,13 +318,6 @@ function BreathTuner() {
   }
 
   /**
-   * Toggles the tuner.
-   */
-  function toggle() {
-    running ? stop() : start();
-  }
-
-  /**
    * Updates the stats table.
    */
   function updateStats() {
