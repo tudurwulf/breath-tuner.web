@@ -118,11 +118,11 @@ function BreathTuner() {
       /** Breath number display. */
       breathNoDisplay = $('#breathNo'),
 
-      /** Exhalation timer display. */
-      exhTimerDisplay = $('#exhTimer'),
+      /** Exhalation length display. */
+      exhLenDisplay = $('#exhLen'),
 
-      /** Inhalation timer display. */
-      inhTimerDisplay = $('#inhTimer'),
+      /** Inhalation length display. */
+      inhLenDisplay = $('#inhLen'),
 
       /** Statistics display. */
       statsDisplay = {
@@ -264,9 +264,9 @@ function BreathTuner() {
     }
 
     if (exhaling)
-      updateExhTimerDisplay(halfBreathSplit);
+      updateExhLenDisplay(halfBreathSplit);
     else
-      updateInhTimerDisplay(halfBreathSplit);
+      updateInhLenDisplay(halfBreathSplit);
   }
 
   /**
@@ -347,8 +347,8 @@ function BreathTuner() {
 
       updateCanvasPosition();
       updateBreathNoDisplay();
-      updateExhTimerDisplay();
-      updateInhTimerDisplay();
+      updateExhLenDisplay();
+      updateInhLenDisplay();
       updateStatsDisplay();
     }
   }
@@ -417,19 +417,19 @@ function BreathTuner() {
   /**
    * Update the exhalation timer.
    */
-  function updateExhTimerDisplay(time) {
+  function updateExhLenDisplay(time) {
     if (time == undefined)
       time = stats[breathIndex].exhLen;
-    exhTimerDisplay.html((time / 1000).toFixed(1));
+    exhLenDisplay.html((time / 1000).toFixed(1));
   }
 
   /**
    * Update the inhalation timer.
    */
-  function updateInhTimerDisplay(time) {
+  function updateInhLenDisplay(time) {
     if (time == undefined)
       time = stats[breathIndex].inhLen;
-    inhTimerDisplay.html((time / 1000).toFixed(1));
+    inhLenDisplay.html((time / 1000).toFixed(1));
   }
 
   /**
