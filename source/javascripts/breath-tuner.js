@@ -300,7 +300,7 @@ function BreathTuner() {
       renderTime();
 
       pushStats();
-      if (!exhaling) updateStats();
+      if (!exhaling) updateStatsDisplay();
 
       halfBreathStart = null;
     }
@@ -393,7 +393,7 @@ function BreathTuner() {
   /**
    * Updates the stats table.
    */
-  function updateStats() {
+  function updateStatsDisplay() {
     function formatSeconds(i) {
       return (i / 1000).toFixed(1);
     }
