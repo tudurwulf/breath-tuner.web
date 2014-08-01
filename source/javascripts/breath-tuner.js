@@ -90,19 +90,19 @@ function BreathTuner() {
        *
        * stats = [
        *   {
-       *     exhTime,
-       *     exhTimeSum,
-       *     exhTimeAvg,
-       *     exhTimeRatio,
+       *     exhLen,
+       *     exhSum,
+       *     exhAvg,
+       *     exhRatio,
        *
-       *     inhTime,
-       *     inhTimeSum,
-       *     inhTimeAvg,
-       *     inhTimeRatio,
+       *     inhLen,
+       *     inhSum,
+       *     inhAvg,
+       *     inhRatio,
        *
-       *     breathTime,
-       *     breathTimeSum,
-       *     breathTimeAvg
+       *     breathLen,
+       *     breathSum,
+       *     breathAvg
        *   },
        *   ...
        * ]
