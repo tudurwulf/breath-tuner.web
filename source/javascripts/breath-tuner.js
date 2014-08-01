@@ -138,6 +138,23 @@ function BreathTuner() {
         breathAvg: $('#breathAvg')
       };
 
+  // Default stats
+  stats[-1] = {
+    exhTime: 0,
+    exhSum: 0,
+    exhAvg: 0,
+    exhRatio: 0,
+
+    inhTime: 0,
+    inhSum: 0,
+    inhAvg: 0,
+    inhRatio: 0,
+
+    breathTime: 0,
+    breathSum: 0,
+    breathAvg: 0
+  };
+
   canvas[0].width = canvasWidth;
   canvas[0].height = canvasHeight;
 
@@ -247,9 +264,9 @@ function BreathTuner() {
     }
 
     if (exhaling)
-      exhTimerDisplay.html((halfBreathSplit / 1000).toFixed(1));
+      updateExhTimerDisplay(halfBreathSplit);
     else
-      inhTimerDisplay.html((halfBreathSplit / 1000).toFixed(1));
+      updateInhTimerDisplay(halfBreathSplit);
   }
 
   /**
@@ -281,7 +298,7 @@ function BreathTuner() {
       if (exhaling) {
         breathIndex++;
         updateCanvasPosition();
-        breathNoDisplay.html(breathIndex + 1);
+        updateBreathNoDisplay();
       }
       halfBreathStart = new Date();
       run();
@@ -326,13 +343,13 @@ function BreathTuner() {
       stats.pop();
 
       breathIndex--;
-      updateCanvasPosition();
       exhaling = false;
 
-      // Reset counters
-      breathNoDisplay.html(breathIndex + 1);
-      exhTimerDisplay.html('0.0');
-      inhTimerDisplay.html('0.0');
+      updateCanvasPosition();
+      updateBreathNoDisplay();
+      updateExhTimerDisplay();
+      updateInhTimerDisplay();
+      updateStatsDisplay();
     }
   }
 
@@ -388,6 +405,31 @@ function BreathTuner() {
       stats[breathIndex].inhRatio = 100 * stats[breathIndex].inhSum /
                                     stats[breathIndex].breathSum;
     }
+  }
+
+  /**
+   * Update the breath number display.
+   */
+  function updateBreathNoDisplay() {
+    breathNoDisplay.html(breathIndex + 1);
+  }
+
+  /**
+   * Update the exhalation timer.
+   */
+  function updateExhTimerDisplay(time) {
+    if (time == undefined)
+      time = stats[breathIndex].exhTime;
+    exhTimerDisplay.html((time / 1000).toFixed(1));
+  }
+
+  /**
+   * Update the inhalation timer.
+   */
+  function updateInhTimerDisplay(time) {
+    if (time == undefined)
+      time = stats[breathIndex].inhTime;
+    inhTimerDisplay.html((time / 1000).toFixed(1));
   }
 
   /**
