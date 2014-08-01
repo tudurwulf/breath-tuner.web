@@ -259,8 +259,8 @@ function BreathTuner() {
       if (exhaling) {
         breathIndex++;
         updateCanvasPosition();
+        breathNoDisplay.html(breathIndex + 1);
       }
-      breathNoDisplay.html(breathIndex + 1);
       halfBreathStartTime = new Date();
       run();
     }
