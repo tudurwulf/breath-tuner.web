@@ -21,8 +21,8 @@ function BreathTuner() {
       /** Currently exhaling? */
       exhaling = false,
 
-      /** Time when current half-breath started. */
-      halfBreathStartTime = null,
+      /** Timestamp when current half-breath started. */
+      halfBreathStart = null,
 
       /** Max milliseconds that can be rendered per half-breath. */
       maxMS = 35000,
@@ -174,7 +174,7 @@ function BreathTuner() {
    */
   function renderTime() {
     // Get milliseconds since current half-breath started
-    var elapsed = new Date() - halfBreathStartTime;
+    var elapsed = new Date() - halfBreathStart;
 
     // Round to deciseconds, but stay in milli
     elapsed = Math.round(elapsed / 100) * 100;
@@ -243,7 +243,7 @@ function BreathTuner() {
    */
   function switchBreath() {
     // Protect the user from double key press
-    if (!halfBreathStartTime || new Date() - halfBreathStartTime > 2000) {
+    if (!halfBreathStart || new Date() - halfBreathStart > 2000) {
       stop();
       exhaling = !exhaling;
       tCursor = 0;
@@ -261,7 +261,7 @@ function BreathTuner() {
         updateCanvasPosition();
         breathNoDisplay.html(breathIndex + 1);
       }
-      halfBreathStartTime = new Date();
+      halfBreathStart = new Date();
       run();
     }
   }
@@ -285,7 +285,7 @@ function BreathTuner() {
         updateStats();
       }
 
-      halfBreathStartTime = null;
+      halfBreathStart = null;
     }
   }
 
