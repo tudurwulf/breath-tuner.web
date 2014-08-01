@@ -12,7 +12,7 @@ title: BreathTuner
 #breathTuner
   .HUD
     #breathNo.top.left.counter 0
-    #exhalationTimer.top.right.counter 0.0
+    #exhLen.top.right.counter 0.0
     #buttons.right
       #switch
         p Start/Switch
@@ -31,25 +31,25 @@ title: BreathTuner
     / div style='width: 1px; height: 100%; background: blue; position: fixed; top: 0; left: 50%; z-index: 100;'
     / div style='width: 100%; height: 1px; background: blue; position: absolute; top: 50%; z-index: 100;'
   .HUD
-    / table#stats.bottom.left
+    table#stats.bottom.left
       tr
         th
         th Average
         th Total
         th Ratio
       tr
-        th Breath
-        td 40.0s
-        td 60.0m
-        td
-      tr
         th Exhalation
-        td 20.0s
-        td 30.0m
-        td 50.0%
+        td#exhAvg 0.0
+        td#exhSum 0:00.0
+        td#exhRatio 0.0%
       tr
         th Inhalation
-        td 20.0s
-        td 30.0m
-        td 50.0%
-    #inhalationTimer.bottom.right.counter 0.0
+        td#inhAvg 0.0
+        td#inhSum 0:00.0
+        td#inhRatio 0.0%
+      tr
+        th Breath
+        td#breathAvg 0.0
+        td#breathSum 0:00.0
+        td
+    #inhLen.bottom.right.counter 0.0

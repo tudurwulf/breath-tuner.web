@@ -1,4 +1,3 @@
-[o] Change HTML title: BreathTuner -> Breath Tuner
 [o] Clean config.rb
     [o] Move helpers out of config.rb
 [o] Move assets in HTML; test if speed is improved; if not then revert
@@ -7,11 +6,11 @@
     [o] Render remainder when switching or stopping
     [o] setInterval vs setTimeout (winner: setTimeout)
     [o] Bug: first horizontal space inserted is 1px too much
+[o]! Stats
 [>] Stop tuner when max breaths reached
-[ ]! Stats
 [ ] Icon
-[ ] Scroll canvas by drag & drop
 [ ] Mobile
+[ ] Scroll canvas by drag & drop
 
 Legend:
   [ ] To do
