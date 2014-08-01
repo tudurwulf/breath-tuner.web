@@ -103,7 +103,7 @@ function BreathTuner() {
       /** Inhalation timer display. */
       inhalationTimerDisplay = $('#inhalationTimer'),
 
-      /** Stats table. */
+      /** Statistics display. */
       statsDisplay = {
         exhalationSum:   $('#exhalationSum'),
         exhalationAvg:   $('#exhalationAvg'),
@@ -333,7 +333,7 @@ function BreathTuner() {
     }
 
     function formatRatio(i) {
-      return i.toFixed(1) + '%'
+      return i.toFixed(1) + '%';
     }
 
     var exhalationSum = 0,
