@@ -259,7 +259,7 @@ function BreathTuner() {
   }
 
   /**
-   * Runs the main loop.
+   * Runs the tuner.
    */
   function run() {
     renderTime();
@@ -267,7 +267,25 @@ function BreathTuner() {
   }
 
   /**
-   * Switches from exhaling to inhaling, and vice versa.
+   * Stops the tuner.
+   */
+  function stop() {
+    if (running) {
+      clearTimeout(running);
+      running = null;
+
+      // Render remainder
+      renderTime();
+
+      pushStats();
+      if (!exhaling) updateStatsDisplay();
+
+      halfBreathStart = null;
+    }
+  }
+
+  /**
+   * Switches from exhaling to inhaling or vice versa.
    */
   function switchBreath() {
     // Protect the user from double key press
@@ -289,24 +307,6 @@ function BreathTuner() {
 
       halfBreathStart = new Date();
       run();
-    }
-  }
-
-  /**
-   * Stops the tuner.
-   */
-  function stop() {
-    if (running) {
-      clearTimeout(running);
-      running = null;
-
-      // Render remainder
-      renderTime();
-
-      pushStats();
-      if (!exhaling) updateStatsDisplay();
-
-      halfBreathStart = null;
     }
   }
 
