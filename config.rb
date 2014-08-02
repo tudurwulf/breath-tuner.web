@@ -6,7 +6,6 @@ activate :directory_indexes
 
 ignore /.*\.kate-swp/
 ignore /.*\.ids/
-ignore /.*\.draft\.md/
 ignore 'stylesheets/all.styl'
 ignore 'stylesheets/help-bg.styl'
 ignore 'stylesheets/index.css.styl'
