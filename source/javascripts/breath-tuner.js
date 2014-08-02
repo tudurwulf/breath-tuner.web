@@ -273,22 +273,16 @@ function BreathTuner() {
     // Protect the user from double key press
     if (!halfBreathStart || new Date() - halfBreathStart > 2000) {
       stop();
-      exhaling = !exhaling;
-      tCursor = 0;
-      start();
-    }
-  }
 
-  /**
-   * Starts the tuner.
-   */
-  function start() {
-    if (!running) {
+      tCursor = 0;
+      exhaling = !exhaling;
+
       if (exhaling) {
         breathIndex++;
         updateCanvasPosition();
         updateBreathNoDisplay();
       }
+
       halfBreathStart = new Date();
       run();
     }
