@@ -274,6 +274,10 @@ function BreathTuner() {
     if (!halfBreathStart || new Date() - halfBreathStart > 2000) {
       stop();
 
+      // Do not continue if max breaths reached
+      if (!exhaling && breathIndex + 1 == maxBreaths)
+        return;
+
       tCursor = 0;
       exhaling = !exhaling;
 

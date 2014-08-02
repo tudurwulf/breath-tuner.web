@@ -7,8 +7,8 @@
     [o] setInterval vs setTimeout (winner: setTimeout)
     [o] Bug: first horizontal space inserted is 1px too much
 [o]! Stats
-[>] Stop tuner when max breaths reached
-[ ] Icon
+[o] Stop tuner when max breaths reached
+[>] Icon
 [ ] Mobile
 [ ] Scroll canvas by drag & drop
 
