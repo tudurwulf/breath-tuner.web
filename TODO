@@ -8,9 +8,9 @@
     [o] Bug: first horizontal space inserted is 1px too much
 [o]! Stats
 [o] Stop tuner when max breaths reached
-[>] Icon
-[ ] Mobile
-[ ] Scroll canvas by drag & drop
+[>]! Adapt to viewport size
+[ ] Icon
+[ ] Scroll canvas by grabbing
 
 Legend:
   [ ] To do
