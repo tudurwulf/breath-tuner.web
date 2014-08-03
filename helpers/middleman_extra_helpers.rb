@@ -1,5 +1,14 @@
 module MiddlemanExtraHelpers
-  # Adds class "current" if link points to current URL
+  # Marks a link as current if it points to the current URL. By default, it adds
+  # the class `current`.
+  #
+  # Options:
+  #   :current_class    Name of class that the element will be bestowed with.
+  #                     Default: current.
+  #   :match_subdirs    Marks the link as current also if the current page URL
+  #                     is its descendant. For example: if the link's URL is
+  #                     `/articles/` and `current_page.url` is
+  #                     `/articles/title/`. Default: false.
   def tab_link_to link, url, opts = {}
     current_class = opts.delete(:current_class) || 'current'
     match_subdirs = opts.delete(:match_subdirs) || false
