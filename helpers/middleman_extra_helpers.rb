@@ -1,10 +1,11 @@
 module MiddlemanExtraHelpers
   # Adds class "current" if link points to current URL
   def tab_link_to link, url, opts = {}
+    current_class = opts.delete(:current_class) || 'current'
+    match_subdirs = opts.delete(:match_subdirs) || false
     tab_url = url_for(url)
-    if  (tab_url != '/' and current_page.url =~ /^#{tab_url}/) or
-        (tab_url == '/' and current_page.url == '/')
-      current_class = opts.delete(:current_class) || 'current'
+    if  (not match_subdirs and current_page.url == tab_url) or
+        (    match_subdirs and current_page.url =~ /^#{tab_url}/)
       opts[:class] = (opts[:class].to_s << " #{current_class}").lstrip
     end
     link_to link, url, opts
