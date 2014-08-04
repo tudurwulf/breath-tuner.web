@@ -21,20 +21,28 @@ module MiddlemanExtraHelpers
   end
 
   # Renders a stylesheet asset within <style> tags
-  # TODO Do not inline js in dev mode
+  # TODO stylesheet_link_tag(*sources, options = {})
   def stylesheet basename
-    content_tag :style do
-      # Requires `.chomp` for proper minification
-      sprockets[ "#{basename}.css" ].to_s.chomp
+    if build?
+      content_tag :style do
+        # Requires `.chomp` for proper minification
+        sprockets[ "#{basename}.css" ].to_s.chomp
+      end
+    else
+      stylesheet_link_tag basename
     end
   end
 
   # Renders a javascript asset within <script> tags
-  # TODO Do not inline js in dev mode
+  # TODO javascript_include_tag(*sources, options = {})
   def javascript basename
-    content_tag :script do
-      # Requires `.chomp` for proper minification
-      sprockets[ "#{basename}.js" ].to_s.chomp
+    if build?
+      content_tag :script do
+        # Requires `.chomp` for proper minification
+        sprockets[ "#{basename}.js" ].to_s.chomp
+      end
+    else
+      javascript_include_tag basename
     end
   end
 end
