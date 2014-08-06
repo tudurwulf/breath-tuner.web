@@ -58,8 +58,7 @@ function BreathTuner() {
 
       /** Canvas height. */
       canvasHeight = xAxisHeight +
-                    (barHSpace + barHeight) * (maxMS / 1000) * 2 +
-                    (barHSpace + barHeight) * 2, // graticule marks
+                    (barHSpace + barHeight) * (maxMS / 1000) * 2,
 
       /** Canvas width. */
       canvasWidth = (barWidth + barVSpace) * maxBreaths - barVSpace,
@@ -159,7 +158,10 @@ function BreathTuner() {
   canvas[0].height = canvasHeight;
 
   $('#chart')
-    .css('height', canvasHeight + 'px');
+    .css('height', canvasHeight + 2 * (barHeight + barHSpace) + 'px');
+
+  canvas
+    .css('top', barHeight + barHSpace + 'px');
 
   $('#xAxis')
     .css('height', xAxisHeight + 'px')
@@ -167,7 +169,7 @@ function BreathTuner() {
 
   $('#graticule')
     .css('width', barWidth + 'px')
-    .css('height', canvasHeight - barHeight * 2 + 'px')
+    .css('height', canvasHeight + 2 * barHSpace + 'px')
     .css('border-top', barHeight + 'px solid ' + colors.purple)
     .css('border-bottom', barHeight + 'px solid ' + colors.purple)
     .css('margin-left', - barWidth / 2 + 'px')

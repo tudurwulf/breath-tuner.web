@@ -7,6 +7,7 @@ $stains = false
 
 $barHeight = 5px
 $barWidth = 20px
+$barHSpace = 2px
 $barVSpace = 4px
 $canvasHeight = 500px // comes from HTML
 
@@ -15,7 +16,7 @@ $canvasHeight = 500px // comes from HTML
 
 #chart
   position relative
-  height $canvasHeight
+  height $canvasHeight + 2 * ($barHeight + $barHSpace)
   overflow hidden
 
   if $stains
@@ -25,6 +26,7 @@ $canvasHeight = 500px // comes from HTML
 #canvas
   display block
   position absolute
+  top $barHeight + $barHSpace
   left 50%
   margin-left ($barWidth / 2) + $barVSpace
 
@@ -33,7 +35,7 @@ $canvasHeight = 500px // comes from HTML
 
 #graticule
   width $barWidth
-  height $canvasHeight - $barHeight * 2
+  height $canvasHeight + 2 * $barHSpace
   border-top $barHeight solid hsl(315, 80%, 50%)
   border-bottom $barHeight solid hsl(315, 80%, 50%)
   position absolute
