@@ -10,7 +10,6 @@ ignore 'stylesheets/all.styl'
 ignore 'stylesheets/help-bg.styl'
 ignore 'stylesheets/index.css.styl'
 ignore 'stylesheets/help.css.styl'
-ignore 'javascripts/jquery-1.11.1.min.js'
 ignore 'javascripts/breath-tuner.js'
 
 configure :development do

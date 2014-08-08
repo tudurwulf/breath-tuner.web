@@ -20,6 +20,13 @@ module MiddlemanExtraHelpers
     link_to link, url, opts
   end
 
+  # TODO Add option to include assets locally if in dev mode
+  # javascript_include_tag 'http://example.com/jquery.js', :dev => 'jquery.js'
+#   alias javascript_include_tag_old javascript_include_tag
+#   def javascript_include_tag
+#     javascript_include_tag_old
+#   end
+
   # Renders a stylesheet asset within <style> tags
   # TODO stylesheet_link_tag(*sources, options = {})
   def stylesheet basename

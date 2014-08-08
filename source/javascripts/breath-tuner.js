@@ -10,7 +10,7 @@
  * @class
  */
 function BreathTuner() {
-  var $ = window.jQuery,
+  var $ = jQuery,
 
       /** ID used by setTimeout(). */
       running = null,

@@ -8,7 +8,9 @@
     [o] Bug: first horizontal space inserted is 1px too much
 [o]! Stats
 [o] Stop tuner when max breaths reached
+[o] Upgrade to jQuery 2
 [>]! Adapt to viewport size
+[ ] Browser requirements
 [ ] Icon
 [ ] Scroll canvas by grabbing
 
