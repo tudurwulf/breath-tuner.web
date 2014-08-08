@@ -433,23 +433,32 @@ function BreathTuner() {
   }
 
   /**
+   * 61250 -> 61.3
+   */
+  function formatSeconds(i) {
+    return (i / 1000).toFixed(1);
+  }
+
+  /**
+   * 61250 -> 1:01.3
+   */
+  function formatMinutes(i) {
+    var m = Math.floor(i / 60000);
+    var s = i % 60000 / 1000;
+    return m + ':' + ('0' + s.toFixed(1)).slice(-4);
+  }
+
+  /**
+   * 49.58 -> 49.6%
+   */
+  function formatRatio(i) {
+    return i.toFixed(1) + '%';
+  }
+
+  /**
    * Updates the stats table.
    */
   function updateStatsDisplay() {
-    function formatSeconds(i) {
-      return (i / 1000).toFixed(1);
-    }
-
-    function formatMinutes(i) {
-      var m = Math.floor(i / 60000);
-      var s = i % 60000 / 1000;
-      return m + ':' + ('0' + s.toFixed(1)).slice(-4);
-    }
-
-    function formatRatio(i) {
-      return i.toFixed(1) + '%';
-    }
-
     statsDisplay.exhSum.html(formatMinutes(stats[breathIndex].exhSum));
     statsDisplay.exhAvg.html(formatSeconds(stats[breathIndex].exhAvg));
     statsDisplay.exhRatio.html(formatRatio(stats[breathIndex].exhRatio));
