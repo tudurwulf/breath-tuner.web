@@ -1,4 +1,5 @@
-'use strict';
+// JSHint directives
+/* exported BreathTuner */
 
 /**
  * Call when DOM is ready.
@@ -10,6 +11,8 @@
  * @class
  */
 function BreathTuner() {
+  'use strict';
+
   var $ = jQuery,
 
       /** ID used by setTimeout(). */
@@ -172,7 +175,7 @@ function BreathTuner() {
     .css('height', canvasHeight + 2 * barHSpace + 'px')
     .css('border-top', barHeight + 'px solid ' + colors.purple)
     .css('border-bottom', barHeight + 'px solid ' + colors.purple)
-    .css('margin-left', - barWidth / 2 + 'px')
+    .css('margin-left', - barWidth / 2 + 'px');
 
   // Reposition the canvas based on the bar width
   updateCanvasPosition();
@@ -418,7 +421,7 @@ function BreathTuner() {
    * Update the exhalation timer.
    */
   function updateExhLenDisplay(time) {
-    if (time == undefined)
+    if (time === undefined)
       time = stats[breathIndex].exhLen;
     exhLenDisplay.html((time / 1000).toFixed(1));
   }
@@ -427,7 +430,7 @@ function BreathTuner() {
    * Update the inhalation timer.
    */
   function updateInhLenDisplay(time) {
-    if (time == undefined)
+    if (time === undefined)
       time = stats[breathIndex].inhLen;
     inhLenDisplay.html((time / 1000).toFixed(1));
   }
