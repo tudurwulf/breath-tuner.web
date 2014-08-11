@@ -9,9 +9,9 @@
 [o]! Stats
 [o] Stop tuner when max breaths reached
 [o] Upgrade to jQuery 2
-[>] Refactor to IIFE
+[o] Refactor to IIFE
 [ ]! Adapt to viewport size
-    [ ] Pre-render
+    [>] Pre-render
 [ ] Browser requirements
 [ ] Icon
 [ ] Scroll canvas by grabbing
