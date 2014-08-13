@@ -14,11 +14,13 @@
                          // started.
       maxMS,             // Max milliseconds that can be rendered per
                          // half-breath.
-      tCursor,           // Time cursor: how many milliseconds of the current
-                         // half-breath have been rendered.
       minMS,             // Min milliseconds that can be rendered.
       maxBreaths,        // Maximum breaths that can be rendered. Also used to
                          // set the width of the canvas.
+      xCursor,           // X-position of the current breath relative to the
+                         // left canvas edge.
+      tCursor,           // Time cursor: how many milliseconds of the current
+                         // half-breath have been rendered.
       barWidth,          // Bar width.
       barHeight,         // Bar height.
       barHSpace,         // Vertical space between bars.
@@ -28,12 +30,9 @@
       canvasHeight,      // Canvas height.
       exhOrigin,         // Coordinate of x-axis' top edge.
       inhOrigin,         // Coordinate of x-axis' bottom edge.
-      xCursor,           // X-position of the current breath relative to the
-                         // left canvas edge.
       colors,            // Bar & graticule colors.
-      stats,             // Statistics are calculated incrementally (i.e. once
-                         // at the end of each breath) and stored here.
-                         // Usually accessed with breathIndex.
+      stats,             // Statistics. Calculated incrementally at the end of
+                         // each breath.
       canvas,            // Canvas object.
       canvasContext,     // Canvas object context.
       breathNoDisplay,   // Breath number display.
@@ -129,8 +128,8 @@
     bindControls();
   }
 
-   // Draws the time spent breathing as bars on the canvas.
-   function renderTime() {
+  // Depicts time as bars on the canvas.
+  function renderTime() {
 
     // Get milliseconds since current half-breath started
     halfBreathSplit = new Date() - halfBreathStart;
