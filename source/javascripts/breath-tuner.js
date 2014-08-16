@@ -238,15 +238,10 @@
     if (breathIndex > -1) {
       stop();
 
-      // Delete the last exhalation
-      var yCursor = 0;
-      var width = barWidth;
-      var height = (canvasHeight - xAxisHeight) / 2;
-      canvasContext.clearRect(xCursor, yCursor, width, height);
-
-      // Delete the last inhalation
-      yCursor = (canvasHeight + xAxisHeight) / 2;
-      canvasContext.clearRect(xCursor, yCursor, width, height);
+      // Clear last exhalation
+      canvasContext.clearRect(xCursor, 0, barWidth, exhOrigin);
+      // Clear last inhalation
+      canvasContext.clearRect(xCursor, inhOrigin, barWidth, canvasHeight);
 
       stats.pop();
 
