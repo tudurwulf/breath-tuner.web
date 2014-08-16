@@ -130,6 +130,9 @@
 
   // Depicts time as bars on the canvas.
   function renderTime() {
+    var tCursorNext, // Project tCursor's next position, so we don't render more
+                     // than the elapsed time.
+        yCursor;
 
     // Get milliseconds since current half-breath started
     halfBreathSplit = new Date() - halfBreathStart;
@@ -137,17 +140,14 @@
     // Round to deciseconds, but stay in milli
     halfBreathSplit = Math.round(halfBreathSplit / 100) * 100;
 
-    // Project tCursor's next position, so we don't render more than the elapsed time
-    var tCursorNext;
-
     while (
       (tCursorNext = tCursor + minMS) <= halfBreathSplit &&
       tCursor < maxMS
     ) {
 
       // Y-position relative to an imaginary x-axis
-      var yCursor = tCursorNext / minMS + // bar pixels
-                    Math.ceil(tCursorNext / 1000) * barHSpace; // space pixels
+      yCursor = tCursorNext / minMS + // bar pixels
+                Math.ceil(tCursorNext / 1000) * barHSpace; // space pixels
 
       // Y-position relative to the top canvas edge, but calculated in
       // relation to the rendered x-axis (which has height)
@@ -340,8 +340,10 @@
 
   // 61250 -> 1:01.3
   function formatMinutes(i) {
-    var m = Math.floor(i / 60000);
-    var s = i % 60000 / 1000;
+    var m, // minutes
+        s; // seconds
+    m = Math.floor(i / 60000);
+    s = i % 60000 / 1000;
     return m + ':' + ( '0' + s.toFixed(1) ).slice(-4);
   }
 
