@@ -116,7 +116,9 @@ $HUDChartSpacing = 10px // space between outside HUD elements and #chart
   background $grey-bg
 
 #buttons
-  margin-left 300px
+  width 18em
+  max-width 40%
+  min-width 10em
   user-select none
   -moz-user-select @user-select
   -webkit-user-select @user-select
@@ -124,9 +126,11 @@ $HUDChartSpacing = 10px // space between outside HUD elements and #chart
   cursor default
 
   div
+    float right
+    clear right
     text-align center
     width 7.8em
-    margin 10px 0
+    margin 15px 0 0
     padding 5px 0
     border 2px solid hsl(0, 0%, 10%)
     border-radius 7px
