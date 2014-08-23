@@ -12,24 +12,24 @@
       halfBreathStart,   // Timestamp when the current half-breath started.
       halfBreathSplit,   // Elapsed milliseconds since the current half-breath
                          // started.
-      maxMS,             // Max milliseconds that can be rendered per
-                         // half-breath.
-      minMS,             // Min milliseconds that can be rendered.
+      maxSeconds,        // Max seconds that can be rendered per half-breath.
       maxBreaths,        // Maximum breaths that can be rendered. Also used to
                          // set the width of the canvas.
       xCursor,           // X-position of the current breath relative to the
                          // left canvas edge.
-      tCursor,           // Time cursor: how many milliseconds of the current
-                         // half-breath have been rendered.
+      yCursor,           // Y-position of the last rendered pixel relative to an
+                         // imaginary x-axis with no height.
       barWidth,          // Bar width.
       barHeight,         // Bar height.
       barHSpace,         // Vertical space between bars.
       barVSpace,         // Horizontal space between bars.
       xAxisHeight,       // X-axis height.
+      oneSecondHeight,   // Height of 1 rendered second.
+      maxYCursor,        // maxSeconds translated in pixels.
       canvasWidth,       // Canvas width.
       canvasHeight,      // Canvas height.
-      exhOrigin,         // Coordinate of x-axis' top edge.
-      inhOrigin,         // Coordinate of x-axis' bottom edge.
+      exhOrigin,         // X-coordinate of x-axis' top edge.
+      inhOrigin,         // X-coordinate of x-axis' bottom edge.
       colors,            // Bar & graticule colors.
       stats,             // Statistics. Calculated incrementally at the end of
                          // each breath.
@@ -46,21 +46,22 @@
     exhaling = false;
     halfBreathStart = null;
     halfBreathSplit = 0;
-    maxMS = 35000;
-    tCursor = 0;
+    maxSeconds = 35;
     maxBreaths = 100;
     barHeight = 5;
-    minMS = 1000 / barHeight;
     barWidth = barHeight * 4;
     barHSpace = 2;
     barVSpace = 4;
     xAxisHeight = 2;
+    oneSecondHeight = barHeight + barHSpace;
+    maxYCursor = maxSeconds * oneSecondHeight;
     canvasHeight =  xAxisHeight +
-                    (barHSpace + barHeight) * (maxMS / 1000) * 2;
+                    (barHSpace + barHeight) * maxSeconds * 2;
     canvasWidth = (barWidth + barVSpace) * maxBreaths - barVSpace;
     exhOrigin = canvasHeight / 2 - xAxisHeight / 2;
     inhOrigin = canvasHeight / 2 + xAxisHeight / 2;
     xCursor = 0;
+    yCursor = 0;
     colors = {
       red:    'hsl(  0, 80%, 50%)',
       orange: 'hsl( 30, 80%, 50%)',
@@ -130,56 +131,73 @@
 
   // Depicts time as bars on the canvas.
   function renderTime() {
-    var tCursorNext, // Project tCursor's next position, so we don't render more
-                     // than the elapsed time.
-        yCursor;
+    var targetYCursor,  // The value that yCursor must reach
+        currentSecond,  // Math cache
+        renderedSecond; // The second that's currently being rendered
 
     // Get milliseconds since current half-breath started
     halfBreathSplit = new Date() - halfBreathStart;
 
     // Round to deciseconds, but stay in milli
+    //
+    // A rounding is needed because the final value displayed by timers is also
+    // rounded by toFixed(). If we didn't round, the chart wouldn't match the
+    // timers.
+    //
+    // We have to stay in milliseconds because halfBreathSplit is later used to
+    // calculate statistics.
     halfBreathSplit = Math.round(halfBreathSplit / 100) * 100;
 
-    while (
-      (tCursorNext = tCursor + minMS) <= halfBreathSplit &&
-      tCursor < maxMS
-    ) {
+    // Math cache
+    currentSecond = halfBreathSplit / 1000;
 
-      // Y-position relative to an imaginary x-axis
-      yCursor = tCursorNext / minMS + // bar pixels
-                Math.ceil(tCursorNext / 1000) * barHSpace; // space pixels
+    // Calculate targetYCursor as if there were no horizontal spaces
+    //
+    // Rule of three:
+    //   1000ms          -> barHeight
+    //   halfBreathSplit -> targetYCursor
+    //
+    // targetYCursor = halfBreathSplit * barHeight / 1000
+    //               = (halfBreathSplit / 1000) * barHeight
+    targetYCursor = Math.floor(currentSecond * barHeight);
 
-      // Y-position relative to the top canvas edge, but calculated in
-      // relation to the rendered x-axis (which has height)
-      if (exhaling)
-        yCursor = exhOrigin - yCursor;
-      else
-        yCursor = inhOrigin + yCursor - 1;
+    // Add horizontal spaces
+    targetYCursor += Math.ceil(currentSecond) * barHSpace;
 
-      if        (tCursorNext <=  2000) {
-        canvasContext.fillStyle = colors.red;
-      } else if (tCursorNext <=  5000) {
-        canvasContext.fillStyle = colors.orange;
-      } else if (tCursorNext <= 10000) {
-        canvasContext.fillStyle = colors.yellow;
-      } else if (tCursorNext <= 15000) {
-        canvasContext.fillStyle = colors.green;
-      } else if (tCursorNext <= 20000) {
-        canvasContext.fillStyle = colors.cyan;
-      } else if (tCursorNext <= 25000) {
-        canvasContext.fillStyle = colors.blue;
-      } else if (tCursorNext <= 30000) {
-        canvasContext.fillStyle = colors.violet;
+    while (yCursor < targetYCursor && yCursor <= maxYCursor) {
+
+      renderedSecond = yCursor / oneSecondHeight;
+
+      if (renderedSecond % 1 == 0) {
+        yCursor += barHSpace;
       } else {
-        canvasContext.fillStyle = colors.purple;
+        if        (renderedSecond <  2) {
+          canvasContext.fillStyle = colors.red;
+        } else if (renderedSecond <  5) {
+          canvasContext.fillStyle = colors.orange;
+        } else if (renderedSecond < 10) {
+          canvasContext.fillStyle = colors.yellow;
+        } else if (renderedSecond < 15) {
+          canvasContext.fillStyle = colors.green;
+        } else if (renderedSecond < 20) {
+          canvasContext.fillStyle = colors.cyan;
+        } else if (renderedSecond < 25) {
+          canvasContext.fillStyle = colors.blue;
+        } else if (renderedSecond < 30) {
+          canvasContext.fillStyle = colors.violet;
+        } else {
+          canvasContext.fillStyle = colors.purple;
+        }
+
+        canvasContext.fillRect(
+          xCursor,
+          exhaling ? exhOrigin - yCursor - 1 : inhOrigin + yCursor,
+          barWidth,
+          1
+        );
+
+        yCursor++;
       }
-
-      canvasContext.fillRect( xCursor,
-                              yCursor,
-                              barWidth,
-                              1);
-
-      tCursor = tCursorNext;
     }
 
     if (exhaling)
@@ -219,7 +237,7 @@
       if (!exhaling && breathIndex + 1 == maxBreaths)
         return;
 
-      tCursor = 0;
+      yCursor = 0;
       exhaling = !exhaling;
 
       if (exhaling) {
