@@ -131,9 +131,8 @@
 
   // Depicts time as bars on the canvas.
   function renderTime() {
-    var targetYCursor,  // The value that yCursor must reach
-        currentSecond,  // Math cache
-        renderedSecond; // The second that's currently being rendered
+    var targetYCursor,   // What value must yCursor reach.
+        secondsRendered; // How many seconds have been rendered.
 
     // Get milliseconds since current half-breath started
     halfBreathSplit = new Date() - halfBreathStart;
@@ -148,42 +147,37 @@
     // calculate statistics.
     halfBreathSplit = Math.round(halfBreathSplit / 100) * 100;
 
-    // Math cache
-    currentSecond = halfBreathSplit / 1000;
-
     // Calculate targetYCursor as if there were no horizontal spaces
     //
     // Rule of three:
     //   1000ms          -> barHeight
     //   halfBreathSplit -> targetYCursor
-    //
-    // targetYCursor = halfBreathSplit * barHeight / 1000
-    //               = (halfBreathSplit / 1000) * barHeight
-    targetYCursor = Math.floor(currentSecond * barHeight);
+    targetYCursor = Math.floor(halfBreathSplit * barHeight / 1000);
 
     // Add horizontal spaces
-    targetYCursor += Math.ceil(currentSecond) * barHSpace;
+    targetYCursor += Math.ceil(halfBreathSplit / 1000) * barHSpace;
 
     while (yCursor < targetYCursor && yCursor <= maxYCursor) {
 
-      renderedSecond = yCursor / oneSecondHeight;
+      secondsRendered = yCursor / oneSecondHeight;
 
-      if (renderedSecond % 1 === 0) {
+      // IF secondsRendered is an integer
+      if (secondsRendered % 1 === 0) {
         yCursor += barHSpace;
       } else {
-        if        (renderedSecond <  2) {
+        if        (secondsRendered <  2) {
           canvasContext.fillStyle = colors.red;
-        } else if (renderedSecond <  5) {
+        } else if (secondsRendered <  5) {
           canvasContext.fillStyle = colors.orange;
-        } else if (renderedSecond < 10) {
+        } else if (secondsRendered < 10) {
           canvasContext.fillStyle = colors.yellow;
-        } else if (renderedSecond < 15) {
+        } else if (secondsRendered < 15) {
           canvasContext.fillStyle = colors.green;
-        } else if (renderedSecond < 20) {
+        } else if (secondsRendered < 20) {
           canvasContext.fillStyle = colors.cyan;
-        } else if (renderedSecond < 25) {
+        } else if (secondsRendered < 25) {
           canvasContext.fillStyle = colors.blue;
-        } else if (renderedSecond < 30) {
+        } else if (secondsRendered < 30) {
           canvasContext.fillStyle = colors.violet;
         } else {
           canvasContext.fillStyle = colors.purple;
