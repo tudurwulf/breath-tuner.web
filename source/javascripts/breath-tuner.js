@@ -168,7 +168,7 @@
 
       renderedSecond = yCursor / oneSecondHeight;
 
-      if (renderedSecond % 1 == 0) {
+      if (renderedSecond % 1 === 0) {
         yCursor += barHSpace;
       } else {
         if        (renderedSecond <  2) {
