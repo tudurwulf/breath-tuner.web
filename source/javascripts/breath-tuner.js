@@ -126,7 +126,27 @@
       .css('margin-left', - barWidth / 2 + 'px');
 
     updateCanvasPosition();
-    bindControls();
+
+    // Bind buttons
+    $('#switch').click(switchBreath);
+    $('#stop').click(stop);
+    $('#back').click(back);
+
+    // Bind keys
+    $(doc).keydown(function(e) {
+      switch (e.which) {
+        case 32: // SPACE
+        case 13: // ENTER
+          switchBreath();
+          return false;
+        case 27: // ESC
+          stop();
+          return false;
+        case  8: // BACKSPACE
+          back();
+          return false;
+      }
+    });
   }
 
   // Depicts time as bars on the canvas.
@@ -375,30 +395,6 @@
 
     statsDisplay.breathSum.html( formatMinutes(stats[breathIndex].breathSum) );
     statsDisplay.breathAvg.html( formatSeconds(stats[breathIndex].breathAvg) );
-  }
-
-  function bindControls() {
-
-    // Bind buttons
-    $('#switch').click(switchBreath);
-    $('#stop').click(stop);
-    $('#back').click(back);
-
-    // Bind keys
-    $(doc).keydown(function(e) {
-      switch (e.which) {
-        case 32: // SPACE
-        case 13: // ENTER
-          switchBreath();
-          return false;
-        case 27: // ESC
-          stop();
-          return false;
-        case  8: // BACKSPACE
-          back();
-          return false;
-      }
-    });
   }
 
   $(init);
