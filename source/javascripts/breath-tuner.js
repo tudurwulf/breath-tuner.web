@@ -33,11 +33,11 @@
       colors,            // Bar & graticule colors.
       stats,             // Statistics. Calculated incrementally at the end of
                          // each breath.
-      canvas,            // Canvas object.
+      $canvas,           // Canvas object.
       canvasContext,     // Canvas object context.
-      breathNoDisplay,   // Breath number display.
-      exhLenDisplay,     // Exhalation length display.
-      inhLenDisplay,     // Inhalation length display.
+      $breathNoDisplay,  // Breath number display.
+      $exhLenDisplay,    // Exhalation length display.
+      $inhLenDisplay,    // Inhalation length display.
       statsDisplay;      // Statistics display.
 
   function init() {
@@ -88,30 +88,30 @@
       breathSum: 0,
       breathAvg: 0
     };
-    canvas = $('#canvas');
-    canvasContext = canvas[0].getContext('2d');
-    breathNoDisplay = $('#breathNo');
-    exhLenDisplay = $('#exhLen');
-    inhLenDisplay = $('#inhLen');
+    $canvas = $('#canvas');
+    canvasContext = $canvas[0].getContext('2d');
+    $breathNoDisplay = $('#breathNo');
+    $exhLenDisplay = $('#exhLen');
+    $inhLenDisplay = $('#inhLen');
     statsDisplay = {
-      exhSum:   $('#exhSum'),
-      exhAvg:   $('#exhAvg'),
-      exhRatio: $('#exhRatio'),
+      $exhSum:   $('#exhSum'),
+      $exhAvg:   $('#exhAvg'),
+      $exhRatio: $('#exhRatio'),
 
-      inhSum:   $('#inhSum'),
-      inhAvg:   $('#inhAvg'),
-      inhRatio: $('#inhRatio'),
+      $inhSum:   $('#inhSum'),
+      $inhAvg:   $('#inhAvg'),
+      $inhRatio: $('#inhRatio'),
 
-      breathSum: $('#breathSum'),
-      breathAvg: $('#breathAvg')
+      $breathSum: $('#breathSum'),
+      $breathAvg: $('#breathAvg')
     };
-    canvas[0].width = canvasWidth;
-    canvas[0].height = canvasHeight;
+    $canvas[0].width = canvasWidth;
+    $canvas[0].height = canvasHeight;
 
     $('#chart')
       .css('height', canvasHeight + 2 * (barHeight + barHSpace) + 'px');
 
-    canvas
+    $canvas
       .css('top', barHeight + barHSpace + 'px');
 
     $('#xAxis')
@@ -344,25 +344,25 @@
   // with the graticule. Also updates xCursor.
   function updateCanvasPosition() {
     xCursor = (barWidth + barVSpace) * breathIndex;
-    canvas.css('margin-left', barWidth / 2 + barVSpace -
-                              (barWidth + barVSpace) * (breathIndex + 1) +
-                              'px');
+    $canvas.css('margin-left',  barWidth / 2 + barVSpace -
+                                (barWidth + barVSpace) * (breathIndex + 1) +
+                                'px');
   }
 
   function updateBreathNoDisplay() {
-    breathNoDisplay.html(breathIndex + 1);
+    $breathNoDisplay.html(breathIndex + 1);
   }
 
   function updateExhLenDisplay(time) {
     if (time === undefined)
       time = stats[breathIndex].exhLen;
-    exhLenDisplay.html( (time / 1000).toFixed(1) );
+    $exhLenDisplay.html( (time / 1000).toFixed(1) );
   }
 
   function updateInhLenDisplay(time) {
     if (time === undefined)
       time = stats[breathIndex].inhLen;
-    inhLenDisplay.html( (time / 1000).toFixed(1) );
+    $inhLenDisplay.html( (time / 1000).toFixed(1) );
   }
 
   // 61250 -> 61.3
@@ -385,16 +385,16 @@
   }
 
   function updateStatsDisplay() {
-    statsDisplay.exhSum.html( formatMinutes(stats[breathIndex].exhSum) );
-    statsDisplay.exhAvg.html( formatSeconds(stats[breathIndex].exhAvg) );
-    statsDisplay.exhRatio.html( formatRatio(stats[breathIndex].exhRatio) );
+    statsDisplay.$exhSum.html( formatMinutes(stats[breathIndex].exhSum) );
+    statsDisplay.$exhAvg.html( formatSeconds(stats[breathIndex].exhAvg) );
+    statsDisplay.$exhRatio.html( formatRatio(stats[breathIndex].exhRatio) );
 
-    statsDisplay.inhSum.html( formatMinutes(stats[breathIndex].inhSum) );
-    statsDisplay.inhAvg.html( formatSeconds(stats[breathIndex].inhAvg) );
-    statsDisplay.inhRatio.html( formatRatio(stats[breathIndex].inhRatio) );
+    statsDisplay.$inhSum.html( formatMinutes(stats[breathIndex].inhSum) );
+    statsDisplay.$inhAvg.html( formatSeconds(stats[breathIndex].inhAvg) );
+    statsDisplay.$inhRatio.html( formatRatio(stats[breathIndex].inhRatio) );
 
-    statsDisplay.breathSum.html( formatMinutes(stats[breathIndex].breathSum) );
-    statsDisplay.breathAvg.html( formatSeconds(stats[breathIndex].breathAvg) );
+    statsDisplay.$breathSum.html( formatMinutes(stats[breathIndex].breathSum) );
+    statsDisplay.$breathAvg.html( formatSeconds(stats[breathIndex].breathAvg) );
   }
 
   $(init);
