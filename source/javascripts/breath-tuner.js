@@ -353,35 +353,35 @@
     $breathNoDisplay.html(breathIndex + 1);
   }
 
-  function updateExhLenDisplay(time) {
-    if (time === undefined)
-      time = stats[breathIndex].exhLen;
-    $exhLenDisplay.html( (time / 1000).toFixed(1) );
+  function updateExhLenDisplay(ms) {
+    if (ms === undefined)
+      ms = stats[breathIndex].exhLen;
+    $exhLenDisplay.html( (ms / 1000).toFixed(1) );
   }
 
-  function updateInhLenDisplay(time) {
-    if (time === undefined)
-      time = stats[breathIndex].inhLen;
-    $inhLenDisplay.html( (time / 1000).toFixed(1) );
+  function updateInhLenDisplay(ms) {
+    if (ms === undefined)
+      ms = stats[breathIndex].inhLen;
+    $inhLenDisplay.html( (ms / 1000).toFixed(1) );
   }
 
   // 61250 -> 61.3
-  function formatSeconds(i) {
-    return (i / 1000).toFixed(1);
+  function formatSeconds(ms) {
+    return (ms / 1000).toFixed(1);
   }
 
   // 61250 -> 1:01.3
-  function formatMinutes(i) {
+  function formatMinutes(ms) {
     var m, // minutes
         s; // seconds
-    m = Math.floor(i / 60000);
-    s = i % 60000 / 1000;
+    m = Math.floor(ms / 60000);
+    s = ms % 60000 / 1000;
     return m + ':' + ( '0' + s.toFixed(1) ).slice(-4);
   }
 
   // 49.58 -> 49.6%
-  function formatRatio(i) {
-    return i.toFixed(1) + '%';
+  function formatRatio(ms) {
+    return ms.toFixed(1) + '%';
   }
 
   function updateStatsDisplay() {
