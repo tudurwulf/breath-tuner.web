@@ -5,7 +5,6 @@ set :images_dir, 'images'
 activate :directory_indexes
 
 ignore /.*\.kate-swp/
-ignore /.*\.ids/
 ignore 'stylesheets/all.styl'
 ignore 'stylesheets/help-bg.styl'
 ignore 'stylesheets/index.css.styl'
