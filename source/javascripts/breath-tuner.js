@@ -128,9 +128,9 @@
     updateCanvasPosition();
 
     // Bind buttons
-    $('#switch').click(switchBreath);
-    $('#stop').click(stop);
-    $('#back').click(back);
+    $('#switch').mousedown(switchBreath);
+    $('#stop').mousedown(stop);
+    $('#back').mousedown(back);
 
     // Bind keys
     $(doc).keydown(function(e) {
