@@ -7,7 +7,7 @@ html
     meta name='keywords' content='breath,meditation,biofeedback,brain,evolution'
     title = current_page.data.title
     = stylesheet_link_tag 'http://fonts.googleapis.com/css?family=Noto+Sans:n,i,b'
-    - yield_content :head
+    = yield_content :head
   body
     nav
       = tab_link_to 'breath tuner', '/index.html'
